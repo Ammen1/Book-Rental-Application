@@ -13,7 +13,11 @@ model User {
   id        Int       @id @default(autoincrement())
   email     String    @unique
   password  String
+  phone     String    @unique
+  location  String
   role      UserRole  @default(USER)
+  status    UserStatus @default(ACTIVE) // Indicates if the user is active or disabled
+  wallet    Float     @default(0.0) // Owner's wallet to track earnings
   books     Book[]    @relation("BookOwner")
   rentals   Rental[]
   createdAt DateTime  @default(now())
@@ -26,31 +30,33 @@ model Book {
   id          Int       @id @default(autoincrement())
   title       String
   author      String
-  category    Category @relation(fields: [categoryId], references: [id])
+  category    Category   @relation(fields: [categoryId], references: [id])
   categoryId  Int
-  owner       User     @relation("BookOwner", fields: [ownerId], references: [id])
+  owner       User       @relation("BookOwner", fields: [ownerId], references: [id])
   ownerId     Int
   quantity    Int
-  available   Boolean  @default(true)
+  available   Boolean    @default(true)
+  approved    Boolean    @default(false)
   rentals     Rental[]
-  createdAt   DateTime @default(now())
-  updatedAt   DateTime @updatedAt
+  createdAt   DateTime   @default(now())
+  updatedAt   DateTime   @updatedAt
 
   @@index([title, author])
 }
 
 model Rental {
   id          Int       @id @default(autoincrement())
-  book        Book     @relation(fields: [bookId], references: [id])
+  book        Book      @relation(fields: [bookId], references: [id])
   bookId      Int
-  renter      User     @relation(fields: [renterId], references: [id])
+  renter      User      @relation(fields: [renterId], references: [id])
   renterId    Int
   startDate   DateTime
   endDate     DateTime
   returnDate  DateTime?
   amount      Float
-  createdAt   DateTime @default(now())
-  updatedAt   DateTime @updatedAt
+  rentalStatus RentalStatus @default(PENDING) // Indicates the status of the rental
+  createdAt   DateTime   @default(now())
+  updatedAt   DateTime   @updatedAt
 
   @@index([bookId, renterId])
 }
@@ -67,4 +73,16 @@ enum UserRole {
   USER
   OWNER
   ADMIN
+}
+
+enum UserStatus {
+  ACTIVE
+  DISABLED
+}
+
+enum RentalStatus {
+  PENDING
+  APPROVED
+  RETURNED
+  CANCELLED
 }
