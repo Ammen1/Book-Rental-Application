@@ -77,35 +77,14 @@ The Book Rental Application is a full-stack project that allows users to rent bo
 
    Open your browser and navigate to `http://localhost:3000` to access the application.
 
+4. **Description of Relationships**
+User to Book: A one-to-many relationship where a User (book owner) can own multiple Books. The ownerId in the Book model refers to the id of the User.
 
-4. **Access the Application**
+Book to Rental: A one-to-many relationship where a Book can be rented multiple times. The bookId in the Rental model refers to the id of the Book.
 
-+----------------+       +----------------+       +----------------+       +----------------+
-|     User       |       |      Book       |       |    Rental      |       |   Category     |
-+----------------+       +----------------+       +----------------+       +----------------+
-| id (PK)        |       | id (PK)         |       | id (PK)        |       | id (PK)        |
-| email           |       | title          |       | bookId (FK)    |       | name           |
-| password        |       | author         |       | renterId (FK)  |       +----------------+
-| role            |       | categoryId (FK)|       | startDate      |       
-| createdAt       |       | ownerId (FK)   |       | endDate        |       
-| updatedAt       |       | quantity       |       | returnDate     |       
-+----------------+       | available      |       | amount         |       
-      |                 | createdAt      |       | createdAt      |       
-      |                 | updatedAt      |       | updatedAt      |       
-      |                 +----------------+       +----------------+       
-      |                         |                   
-      |                         |                   
-      |                         |                   
-      |                         |                   
-      |                         |                   
-      |                 +----------------+       
-      |                 |     Category   |       
-      |                 +----------------+       
-      |                   
-      +-----------------<   owns   >------------------->+        
-                        |                           |   
-                        +---------------------------+    
+User to Rental: A one-to-many relationship where a User can rent multiple Books. The renterId in the Rental model refers to the id of the User.
 
+Book to Category: A many-to-one relationship where each Book belongs to one Category, but a Category can include multiple Books. The categoryId in the Book model refers to the id of the Category.
 
 ### API Endpoints
 
