@@ -30,7 +30,7 @@ The Book Rental Application is a full-stack project that allows users to rent bo
 1. **Clone the Repository**
 
    ```bash
-   git clone https://github.com/your-username/book-rental-app.git
+   git clone https://github.com/Ammen1/Book-Rental-Application
    cd book-rental-app
    ```
 
