@@ -1,6 +1,3 @@
-Sure! Here’s a `README.md` for your Book Rental Application project. It includes project setup instructions, usage details, and how to contribute.
-
----
 
 # Book Rental Application
 
