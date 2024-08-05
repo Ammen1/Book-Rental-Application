@@ -5,6 +5,8 @@
 
 The Book Rental Application is a full-stack project that allows users to rent books, upload books for rent, and manage book rentals. It includes dashboards for book owners and system admins, and implements access control using CASL. The application is built with Next.js or React.js for the frontend, Node.js for the backend, and PostgreSQL for the database.
 
+![Company Logo](image.png)
+
 ## Features
 
 - **User Roles:**
@@ -74,6 +76,36 @@ The Book Rental Application is a full-stack project that allows users to rent bo
 3. **Access the Application**
 
    Open your browser and navigate to `http://localhost:3000` to access the application.
+
+
+4. **Access the Application**
+
++----------------+       +----------------+       +----------------+       +----------------+
+|     User       |       |      Book       |       |    Rental      |       |   Category     |
++----------------+       +----------------+       +----------------+       +----------------+
+| id (PK)        |       | id (PK)         |       | id (PK)        |       | id (PK)        |
+| email           |       | title          |       | bookId (FK)    |       | name           |
+| password        |       | author         |       | renterId (FK)  |       +----------------+
+| role            |       | categoryId (FK)|       | startDate      |       
+| createdAt       |       | ownerId (FK)   |       | endDate        |       
+| updatedAt       |       | quantity       |       | returnDate     |       
++----------------+       | available      |       | amount         |       
+      |                 | createdAt      |       | createdAt      |       
+      |                 | updatedAt      |       | updatedAt      |       
+      |                 +----------------+       +----------------+       
+      |                         |                   
+      |                         |                   
+      |                         |                   
+      |                         |                   
+      |                         |                   
+      |                 +----------------+       
+      |                 |     Category   |       
+      |                 +----------------+       
+      |                   
+      +-----------------<   owns   >------------------->+        
+                        |                           |   
+                        +---------------------------+    
+
 
 ### API Endpoints
 
