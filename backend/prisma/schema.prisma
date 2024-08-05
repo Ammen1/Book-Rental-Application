@@ -1,0 +1,70 @@
+// prisma/schema.prisma
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+model User {
+  id        Int       @id @default(autoincrement())
+  email     String    @unique
+  password  String
+  role      UserRole  @default(USER)
+  books     Book[]    @relation("BookOwner")
+  rentals   Rental[]
+  createdAt DateTime  @default(now())
+  updatedAt DateTime  @updatedAt
+
+  @@index([email])
+}
+
+model Book {
+  id          Int       @id @default(autoincrement())
+  title       String
+  author      String
+  category    Category @relation(fields: [categoryId], references: [id])
+  categoryId  Int
+  owner       User     @relation("BookOwner", fields: [ownerId], references: [id])
+  ownerId     Int
+  quantity    Int
+  available   Boolean  @default(true)
+  rentals     Rental[]
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+
+  @@index([title, author])
+}
+
+model Rental {
+  id          Int       @id @default(autoincrement())
+  book        Book     @relation(fields: [bookId], references: [id])
+  bookId      Int
+  renter      User     @relation(fields: [renterId], references: [id])
+  renterId    Int
+  startDate   DateTime
+  endDate     DateTime
+  returnDate  DateTime?
+  amount      Float
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+
+  @@index([bookId, renterId])
+}
+
+model Category {
+  id    Int    @id @default(autoincrement())
+  name  String @unique
+  books Book[]
+
+  @@index([name])
+}
+
+enum UserRole {
+  USER
+  OWNER
+  ADMIN
+}
