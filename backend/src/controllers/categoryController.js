@@ -1,12 +1,13 @@
 import { PrismaClient } from '@prisma/client';
+import { validationResult } from 'express-validator';
 import { catchAsyncErrors } from '../middlewares/catchAsyncError.js';
 import ErrorHandler from '../middlewares/error.js';
-import { validationResult } from 'express-validator';
-
 
 const prisma = new PrismaClient();
 
-// Controller for creating a new category
+/**
+ * Controller for creating a new category.
+ */
 export const createCategory = catchAsyncErrors(async (req, res, next) => {
   const errors = validationResult(req);
   if (!errors.isEmpty()) {
@@ -16,7 +17,6 @@ export const createCategory = catchAsyncErrors(async (req, res, next) => {
   const { name } = req.body;
 
   try {
-    // Check if category already exists
     const categoryExists = await prisma.category.findUnique({
       where: { name },
     });
@@ -25,7 +25,6 @@ export const createCategory = catchAsyncErrors(async (req, res, next) => {
       return next(new ErrorHandler("Category already exists", 400));
     }
 
-    // Create new category
     const category = await prisma.category.create({
       data: { name },
     });
@@ -33,6 +32,86 @@ export const createCategory = catchAsyncErrors(async (req, res, next) => {
     res.status(201).json({
       success: true,
       category,
+    });
+  } catch (error) {
+    return next(new ErrorHandler("Internal Server Error", 500));
+  }
+});
+
+/**
+ * Controller for listing all categories.
+ */
+export const listCategories = catchAsyncErrors(async (req, res, next) => {
+  try {
+    const categories = await prisma.category.findMany();
+    console.log(categories)
+
+    res.status(200).json({
+      success: true,
+      categories,
+    });
+  } catch (error) {
+    return next(new ErrorHandler("Internal Server Error", 500));
+  }
+});
+
+/**
+ * Controller for updating a category.
+ */
+export const updateCategory = catchAsyncErrors(async (req, res, next) => {
+  const errors = validationResult(req);
+  if (!errors.isEmpty()) {
+    return next(new ErrorHandler(errors.array().map(err => err.msg).join(', '), 400));
+  }
+
+  const { id } = req.params;
+  const { name } = req.body;
+
+  try {
+    const category = await prisma.category.findUnique({
+      where: { id: parseInt(id, 10) },
+    });
+
+    if (!category) {
+      return next(new ErrorHandler("Category not found", 404));
+    }
+
+    const updatedCategory = await prisma.category.update({
+      where: { id: parseInt(id, 10) },
+      data: { name },
+    });
+
+    res.status(200).json({
+      success: true,
+      category: updatedCategory,
+    });
+  } catch (error) {
+    return next(new ErrorHandler("Internal Server Error", 500));
+  }
+});
+
+/**
+ * Controller for deleting a category.
+ */
+export const deleteCategory = catchAsyncErrors(async (req, res, next) => {
+  const { id } = req.params;
+
+  try {
+    const category = await prisma.category.findUnique({
+      where: { id: parseInt(id, 10) },
+    });
+
+    if (!category) {
+      return next(new ErrorHandler("Category not found", 404));
+    }
+
+    await prisma.category.delete({
+      where: { id: parseInt(id, 10) },
+    });
+
+    res.status(200).json({
+      success: true,
+      message: "Category deleted successfully",
     });
   } catch (error) {
     return next(new ErrorHandler("Internal Server Error", 500));
