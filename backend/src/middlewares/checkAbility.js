@@ -1,16 +1,16 @@
-import { defineAbilitiesFor } from '../abilities/defineAbilities.js';
 import { ForbiddenError } from '@casl/ability';
+import { defineAbilitiesFor } from '../abilities/defineAbilities.js';
 
 export const checkAbilities = (action, subject) => {
   return (req, res, next) => {
-    const user = req.user; // Assumes user is already authenticated and attached to req
+    const user = req.user; // Assumes user is attached to req after authentication
     const ability = defineAbilitiesFor(user.role);
 
     try {
       ForbiddenError.from(ability).throwUnlessCan(action, subject);
-      return next();
+      next(); // Proceed to the next middleware/controller if allowed
     } catch (error) {
-      return res.status(403).json({ message: 'Forbidden' });
+      res.status(403).json({ message: 'Forbidden' }); // Respond with forbidden if not allowed
     }
   };
 };
