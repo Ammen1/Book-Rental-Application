@@ -1,5 +1,4 @@
 import express from 'express';
-import { isAuthenticated } from '../middlewares/auth.js';
 import { checkAbilities } from '../middlewares/checkAbility.js';
 import {
   createCategory,
@@ -10,8 +9,6 @@ import {
 import { validateCategory } from '../validation/validateCategory.js';
 
 const router = express.Router();
-
-router.use(isAuthenticated);
 
 router.post('/',
   validateCategory,
