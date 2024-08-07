@@ -3,14 +3,22 @@ import { defineAbilitiesFor } from '../abilities/defineAbilities.js';
 
 export const checkAbilities = (action, subject) => {
   return (req, res, next) => {
-    const user = req.user; // Assumes user is attached to req after authentication
-    const ability = defineAbilitiesFor(user.role);
+    const user = req.user;
+
+    if (!user) {
+      return res.status(401).json({ message: 'Unauthorized' }); // User not authenticated
+    }
+
+    const ability = defineAbilitiesFor(user.role); // Pass the user's role to define abilities
+
+    console.log(`Checking ability for action: ${action} on subject: ${subject}`);
 
     try {
       ForbiddenError.from(ability).throwUnlessCan(action, subject);
       next(); // Proceed to the next middleware/controller if allowed
     } catch (error) {
-      res.status(403).json({ message: 'Forbidden' }); // Respond with forbidden if not allowed
+      console.error('Access denied:', error.message);
+      res.status(403).json({ message: 'Forbidden', error: error.message }); // Respond with forbidden if not allowed
     }
   };
 };

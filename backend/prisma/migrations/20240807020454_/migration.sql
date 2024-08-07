@@ -10,6 +10,7 @@ CREATE TYPE "RentalStatus" AS ENUM ('PENDING', 'APPROVED', 'RETURNED', 'CANCELLE
 -- CreateTable
 CREATE TABLE "User" (
     "id" SERIAL NOT NULL,
+    "name" TEXT NOT NULL,
     "email" TEXT NOT NULL,
     "password" TEXT NOT NULL,
     "phone" TEXT NOT NULL,
@@ -31,7 +32,7 @@ CREATE TABLE "Book" (
     "categoryId" INTEGER NOT NULL,
     "ownerId" INTEGER NOT NULL,
     "quantity" INTEGER NOT NULL,
-    "available" BOOLEAN NOT NULL DEFAULT true,
+    "available" BOOLEAN NOT NULL DEFAULT false,
     "approved" BOOLEAN NOT NULL DEFAULT false,
     "createdAt" TIMESTAMP(3) NOT NULL DEFAULT CURRENT_TIMESTAMP,
     "updatedAt" TIMESTAMP(3) NOT NULL,

@@ -11,6 +11,7 @@ generator client {
 
 model User {
   id        Int       @id @default(autoincrement())
+  name      String
   email     String    @unique
   password  String
   phone     String    @unique
@@ -35,7 +36,7 @@ model Book {
   owner       User       @relation("BookOwner", fields: [ownerId], references: [id])
   ownerId     Int
   quantity    Int
-  available   Boolean    @default(true)
+  available   Boolean    @default(false)
   approved    Boolean    @default(false)
   rentals     Rental[]
   createdAt   DateTime   @default(now())

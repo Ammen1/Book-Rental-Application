@@ -7,7 +7,7 @@ import bcrypt from 'bcrypt';
 const prisma = new PrismaClient();
 
 export const register = catchAsyncErrors(async (req, res, next) => {
-  const { email, phone, password, role, location } = req.body;
+  const { email, phone, password, role, location, name } = req.body;
   if (!email || !phone || !password || !role) {
     return next(new ErrorHandler("Please fill full form!", 400));
   }
@@ -26,6 +26,7 @@ export const register = catchAsyncErrors(async (req, res, next) => {
     password: hashedPassword,
     role,
     location,
+    name,
   };
 
   const user = await prisma.user.create({ data: userData });

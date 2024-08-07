@@ -14,7 +14,7 @@
   "dependencies": {
     "@casl/ability": "^6.7.1",
     "@casl/prisma": "^1.4.1",
-    "@prisma/client": "^5.17.0",
+    "@prisma/client": "^5.18.0",
     "bcrypt": "^5.1.1",
     "bcryptjs": "^2.4.3",
     "cloudinary": "^2.4.0",
@@ -28,6 +28,6 @@
   },
   "devDependencies": {
     "nodemon": "^3.1.4",
-    "prisma": "^5.17.0"
+    "prisma": "^5.18.0"
   }
 }
