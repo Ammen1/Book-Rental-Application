@@ -189,75 +189,82 @@ export const deleteBook = catchAsyncErrors(async (req, res, next) => {
 });
 
 export const getStatistics = catchAsyncErrors(async (req, res, next) => {
-    try {
-      // Fetch counts and group by operations
-      const [
-        totalBooks,
-        totalCategories,
-        totalUsers,
-        totalAvailableBooks,
-        totalApprovedBooks,
-        booksByOwner,
-        availableBooksByCategory
-      ] = await Promise.all([
-        prisma.book.count(),
-        prisma.category.count(),
-        prisma.user.count(),
-        prisma.book.count({ where: { available: true } }),
-        prisma.book.count({ where: { approved: true } }),
-        prisma.book.groupBy({
-          by: ['ownerId'],
-          _count: { id: true }
-        }),
-        prisma.book.groupBy({
-          by: ['categoryId'],
-          _count: { id: true },
-          where: { available: true }
-        })
-      ]);
-  
-      // Extract unique owner IDs and category IDs
-      const ownerIds = booksByOwner.map(stat => stat.ownerId);
-      const categoryIds = availableBooksByCategory.map(stat => stat.categoryId);
-  
-      // Fetch owner names
-      const owners = await prisma.user.findMany({
-        where: { id: { in: ownerIds } },
-        select: { id: true, name: true }
-      });
-      const ownerMap = new Map(owners.map(owner => [owner.id, owner.name]));
-  
-      // Fetch category names
-      const categories = await prisma.category.findMany({
-        where: { id: { in: categoryIds } },
-        select: { id: true, name: true }
-      });
-      const categoryMap = new Map(categories.map(category => [category.id, category.name]));
-      console.log(categories)
-      // Prepare response
-      res.status(200).json({
-        success: true,
-        statistics: {
-          totalBooks,
-          totalCategories,
-          totalUsers,
-          totalAvailableBooks,
-          totalApprovedBooks,
-          booksByOwner: booksByOwner.map(stat => ({
-            ownerId: stat.ownerId,
-            ownerName: ownerMap.get(stat.ownerId) || 'Unknown',
-            bookCount: stat._count.id
-          })),
-          availableBooksByCategory: availableBooksByCategory.map(stat => ({
-            categoryId: stat.categoryId,
-            categoryName: categoryMap.get(stat.categoryId) || 'Unknown',
-            availableBookCount: stat._count.id
-          }))
-        }
-      });
-    } catch (error) {
-      console.error('Error fetching statistics:', error);
-      return next(new ErrorHandler("Internal Server Error", 500));
-    }
-  });
-  
+  try {
+    // Fetch counts and group by operations
+    const [
+      totalBooks,
+      totalCategories,
+      totalUsers,
+      totalAvailableBooks,
+      totalApprovedBooks,
+      booksByOwner,
+      availableBooksByCategory
+    ] = await Promise.all([
+      prisma.book.count(),
+      prisma.category.count(),
+      prisma.user.count(),
+      prisma.book.count({ where: { available: true } }),
+      prisma.book.count({ where: { approved: true } }),
+      prisma.book.groupBy({
+        by: ['ownerId'],
+        _count: { id: true }
+      }),
+      prisma.book.groupBy({
+        by: ['categoryId'],
+        _count: { id: true },
+        where: { available: true }
+      })
+    ]);
+
+    // Extract unique owner IDs and category IDs
+    const ownerIds = booksByOwner.map(stat => stat.ownerId);
+    const categoryIds = availableBooksByCategory.map(stat => stat.categoryId);
+
+    // Fetch owner names
+    const owners = await prisma.user.findMany({
+      where: { id: { in: ownerIds } },
+      select: { id: true, name: true }
+    });
+    console.log('Fetched owners:', owners); // Log owners
+
+    const ownerMap = new Map(owners.map(owner => [owner.id, owner.name]));
+
+    // Fetch category names
+    const categories = await prisma.category.findMany({
+      where: { id: { in: categoryIds } },
+      select: { id: true, name: true }
+    });
+    console.log('Fetched categories:', categories); // Log categories
+
+    const categoryMap = new Map(categories.map(category => [category.id, category.name]));
+
+    // Prepare response
+    const statistics = {
+      totalBooks,
+      totalCategories,
+      totalUsers,
+      totalAvailableBooks,
+      totalApprovedBooks,
+      booksByOwner: booksByOwner.map(stat => ({
+        ownerId: stat.ownerId,
+        ownerName: ownerMap.get(stat.ownerId) || 'Unknown',
+        bookCount: stat._count.id
+      })),
+      availableBooksByCategory: availableBooksByCategory.map(stat => ({
+        categoryId: stat.categoryId,
+        categoryName: categoryMap.get(stat.categoryId) || 'Unknown',
+        availableBookCount: stat._count.id
+      }))
+    };
+
+    console.log('Statistics to be sent:', statistics); // Log final statistics
+
+    res.status(200).json({
+      success: true,
+      statistics
+    });
+  } catch (error) {
+    console.error('Error fetching statistics:', error);
+    return next(new ErrorHandler("Internal Server Error", 500));
+  }
+});
