@@ -6,27 +6,21 @@ import ErrorHandler from '../middlewares/error.js';
 const prisma = new PrismaClient();
 
 // Get all users
+// Get all users
 export const getUsers = catchAsyncErrors(async (req, res, next) => {
-  if (req.user.role !== 'ADMIN') {
-    return next(new ErrorHandler("You are not authorized to view this resource", 403)) 
-  }
+  // if (req.user.role !== 'ADMIN') {
+  //   return next(new ErrorHandler("You are not authorized to view this resource", 403)); 
+  // }
 
   const users = await prisma.user.findMany({
-    select: {
-      id: true,
-      email: true,
-      phone: true,
-      role: true,
-      location:true,
-    },
   });
 
   res.status(200).json({
     success: true,
     users,
   });
+});
 
-})
 
 // Get a single user by ID
 export const getUser = catchAsyncErrors(async (req, res, next) => {
@@ -40,7 +34,6 @@ export const getUser = catchAsyncErrors(async (req, res, next) => {
       phone: true,
       role: true,
       location: true,
-      // Exclude sensitive fields
       password: false,
       wallet: false,
     },

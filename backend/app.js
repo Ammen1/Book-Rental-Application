@@ -14,6 +14,11 @@ import { errorMiddleware } from "./src/middlewares/error.js";
 const app = express();
 config({ path: './config/config.env' });
 
+app.use(cors({
+    origin: 'http://localhost:5173',
+    credentials: true,
+  }));
+
 app.use(cookieParser());
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
