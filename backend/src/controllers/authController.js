@@ -51,6 +51,11 @@ export const login = catchAsyncErrors(async (req, res, next) => {
     return next(new ErrorHandler("Invalid Email or Password.", 400));
   }
 
+  // Check if user status is disabled
+  if (user.status === 'DISABLED') {
+    return next(new ErrorHandler("Your account is disabled. Please contact support.", 403));
+  }
+
   // Compare password
   const isPasswordMatched = await bcrypt.compare(password, user.password);
 
@@ -58,7 +63,6 @@ export const login = catchAsyncErrors(async (req, res, next) => {
     return next(new ErrorHandler("Invalid Email or Password.", 400));
   }
 
-  // Check role
   if (user.role !== role) {
     return next(new ErrorHandler(`User with provided email and ${role} not found!`, 404));
   }
@@ -70,15 +74,18 @@ export const login = catchAsyncErrors(async (req, res, next) => {
   sendToken(userWithoutPassword, 200, res, "User Logged In!");
 });
 
-
 export const resetPasswordRequest = catchAsyncErrors(async (req, res, next) => {
   const { email } = req.body;
-
 
   const user = await prisma.user.findUnique({ where: { email } });
 
   if (!user) {
     return next(new ErrorHandler('User not found with this email', 404));
+  }
+
+  // Check if user status is disabled
+  if (user.status === 'DISABLED') {
+    return next(new ErrorHandler("Your account is disabled. Please contact support.", 403));
   }
 
   // Generate a reset token
@@ -93,7 +100,7 @@ export const resetPasswordRequest = catchAsyncErrors(async (req, res, next) => {
   // Create the reset password link
   const resetPageLink = `http://localhost:3000/reset-password?token=${token}&email=${email}`;
   const subject = 'Password Reset Request for Book Rental Application';
-  const html = passwordResetTemplate(resetPageLink); // Ensure this template function is properly defined
+  const html = passwordResetTemplate(resetPageLink); 
 
   // Send email with reset link
   const response = await sendMail({ to: email, subject, html });
@@ -119,7 +126,6 @@ export const resetPassword = catchAsyncErrors(async (req, res, next) => {
       return next(new ErrorHandler('Error hashing password', 500));
     }
 
-    // Update user with the new password and clear the reset token
     await prisma.user.update({
       where: { email },
       data: {
