@@ -1,0 +1,2 @@
+-- AlterTable
+ALTER TABLE "Book" ADD COLUMN     "price" DOUBLE PRECISION DEFAULT 0.00;

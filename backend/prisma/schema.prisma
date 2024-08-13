@@ -36,6 +36,7 @@ model Book {
   categoryId  Int
   owner       User       @relation("BookOwner", fields: [ownerId], references: [id])
   ownerId     Int
+  price       Float?     @default(0.00)
   quantity    Int
   available   Boolean    @default(false)
   approved    Boolean    @default(false)
