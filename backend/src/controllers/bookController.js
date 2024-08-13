@@ -15,10 +15,10 @@ export const createBook = catchAsyncErrors(async (req, res, next) => {
     return next(new ErrorHandler(errors.array().map(err => err.msg).join(', '), 400));
   }
 
-  const { title, author, categoryId, ownerId, quantity } = req.body;
+  const { title, author, categoryId, quantity, price, ownerId } = req.body; // Make sure ownerId is included here
 
-  if (!title || !ownerId || !categoryId) {
-    return next(new ErrorHandler("Title, Owner ID, and Category ID are required", 400));
+  if (!title || !categoryId || !ownerId) { // Ensure ownerId is checked here
+    return next(new ErrorHandler("Title, Category ID, and Owner ID are required", 400));
   }
 
   try {
@@ -44,9 +44,10 @@ export const createBook = catchAsyncErrors(async (req, res, next) => {
         author,
         categoryId,
         ownerId,
-        quantity,
+        quantity: parseInt(quantity, 10), 
         available: true,
         approved: false,
+        price: parseFloat(price), 
       },
     });
 
@@ -60,9 +61,10 @@ export const createBook = catchAsyncErrors(async (req, res, next) => {
   }
 });
 
+
 // List all books with optional search and filtering
 export const listBooks = catchAsyncErrors(async (req, res, next) => {
-    const { title, author, categoryId, ownerId, available, approved, ownerLocation } = req.query;
+    const { title, author, categoryId, ownerId, available, approved, ownerLocation, price } = req.query;
   
     const filter = {};
     if (title) filter.title = { contains: title, mode: 'insensitive' };
@@ -78,6 +80,7 @@ export const listBooks = catchAsyncErrors(async (req, res, next) => {
         where: filter,
         include: {
           owner: true, 
+          category: true, 
         },
       });
       console.log(books)
@@ -113,22 +116,50 @@ export const getBookById = catchAsyncErrors(async (req, res, next) => {
   }
 });
 
+
 // Get books by owner ID
 export const getBooksByOwnerId = catchAsyncErrors(async (req, res, next) => {
   const { ownerId } = req.params;
+  const { wallet, preMonths, preYears } = req.query; 
 
   try {
+    // Build query filters
+    const filters = { ownerId: Number(ownerId) };
+
+    if (wallet) {
+      filters.wallet = wallet; 
+    }
+
+    // Add date filters if preMonths or preYears are provided
+    if (preMonths || preYears) {
+      const now = new Date();
+      let dateThreshold = new Date();
+
+      if (preMonths) {
+        dateThreshold.setMonth(now.getMonth() - Number(preMonths));
+      } else if (preYears) {
+        dateThreshold.setFullYear(now.getFullYear() - Number(preYears));
+      }
+
+      filters.publishedDate = { gte: dateThreshold }; 
+    }
+
+    // Fetch books based on filters
     const books = await prisma.book.findMany({
-      where: { ownerId: Number(ownerId) },
+      where: filters,
     });
-    console.log(books)
+
     if (books.length === 0) {
       return next(new ErrorHandler("No books found for this owner", 404));
     }
 
+    // Calculate total earnings
+    const totalEarnings = books.reduce((sum, book) => sum + book.price, 0);
+
     res.status(200).json({
       success: true,
       books,
+      totalEarnings,
     });
   } catch (error) {
     console.error('Error fetching books by owner ID:', error);
