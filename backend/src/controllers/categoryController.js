@@ -43,8 +43,15 @@ export const createCategory = catchAsyncErrors(async (req, res, next) => {
  */
 export const listCategories = catchAsyncErrors(async (req, res, next) => {
   try {
-    const categories = await prisma.category.findMany();
-    console.log(categories)
+    const categories = await prisma.category.findMany({
+      include: {
+        _count: {
+          select: { books: true },
+        },
+      },
+    });
+
+    console.log(categories);
 
     res.status(200).json({
       success: true,
@@ -54,6 +61,7 @@ export const listCategories = catchAsyncErrors(async (req, res, next) => {
     return next(new ErrorHandler("Internal Server Error", 500));
   }
 });
+;
 
 /**
  * Controller for updating a category.
