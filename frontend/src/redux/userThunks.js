@@ -51,7 +51,7 @@ export const fetchUsers = createAsyncThunk(
   }
 );
 
-// Update Book Approval Thunk
+
 export const updateBookApproval = createAsyncThunk(
   'user/updateBookApproval',
   async ({ userId, bookId, approved }, { dispatch, rejectWithValue }) => {
