@@ -1,6 +1,6 @@
 import { useState, useEffect } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
-import { fetchUsers, updateUserStatus, updateUser } from '../redux/userThunks';
+import { fetchUsers, updateUserStatus, updateUser, deleteUser } from '../redux/userThunks';
 import {
   Paper, Typography, Table, TableBody, TableCell, TableContainer, TableHead,
   TableRow, Box, IconButton, Avatar, Tooltip, Switch, FormControlLabel,
@@ -43,9 +43,15 @@ const UserTable = () => {
     setOpenDialog(true);
   };
 
-  const handleDelete = (userId) => {
-    console.log('Delete user with ID:', userId);
-    alert(`Delete user with ID: ${userId}`);
+  const handleDelete = async (userId) => {
+    if (window.confirm('Are you sure you want to delete this user?')) {
+      try {
+        await dispatch(deleteUser(userId)).unwrap();
+        dispatch(fetchUsers());
+      } catch (error) {
+        console.error('Error deleting user:', error);
+      }
+    }
   };
 
   const handleApprovalToggle = async (userId) => {
@@ -152,10 +158,10 @@ const UserTable = () => {
   }
 
   return (
-    <Box sx={{ width: '98%', overflowX: 'auto', mt: 10, ml: 1  }}>
+    <Box sx={{ width: '98%', overflowX: 'auto', mt: 10, ml: 1.5  }}>
       <TableContainer component={Paper} sx={{ width: '100%', backgroundColor: "#ffff", }}>
       <Box display="flex" mt="65px" justifyContent="space-between" alignItems="center" mb={isSmallScreen ? 1 : 2}>
-        <Typography variant="h6" fontWeight="bold" sx={{ color: '#000000', ml: "12px", mt: "10px", fontSize: isSmallScreen ? '1rem' : '1.25rem' }}>
+        <Typography variant="h6" fontWeight="bold" sx={{ color: '#000000', ml: "12px", mt: "9px", fontSize: isSmallScreen ? '1rem' : '1.25rem' }}>
           List of owners
         </Typography>
         <img
