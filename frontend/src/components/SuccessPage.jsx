@@ -1,7 +1,6 @@
-// components/SuccessPage.js
-import React, { useEffect } from 'react';
+import  { useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
-import { Box, Typography, Fade, Paper } from '@mui/material';
+import { Box,  Fade, Paper } from '@mui/material';
 import { keyframes } from '@emotion/react';
 
 const fadeIn = keyframes`
@@ -19,7 +18,7 @@ const SuccessPage = () => {
   useEffect(() => {
     const timer = setTimeout(() => {
       navigate('/upload-book');
-    }, 10000); // 10 seconds
+    }, 10000);
 
     return () => clearTimeout(timer);
   }, [navigate]);
@@ -32,7 +31,7 @@ const SuccessPage = () => {
         alignItems: 'center',
         justifyContent: 'center',
         height: '100vh',
-        backgroundColor: '#e0f7fa', // Light cyan background for a refreshing look
+        backgroundColor: '#e0f7fa',
         padding: 4,
         animation: `${fadeIn} 1s ease-in-out`,
       }}
