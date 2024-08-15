@@ -120,14 +120,14 @@ export const getBookById = catchAsyncErrors(async (req, res, next) => {
 // Get books by owner ID
 export const getBooksByOwnerId = catchAsyncErrors(async (req, res, next) => {
   const { ownerId } = req.params;
-  const { wallet, preMonths, preYears } = req.query; 
+  const { wallet, preMonths, preYears } = req.query;
 
   try {
     // Build query filters
     const filters = { ownerId: Number(ownerId) };
 
     if (wallet) {
-      filters.wallet = wallet; 
+      filters.wallet = wallet;
     }
 
     // Add date filters if preMonths or preYears are provided
@@ -141,31 +141,55 @@ export const getBooksByOwnerId = catchAsyncErrors(async (req, res, next) => {
         dateThreshold.setFullYear(now.getFullYear() - Number(preYears));
       }
 
-      filters.publishedDate = { gte: dateThreshold }; 
+      filters.createdAt = { gte: dateThreshold };
     }
 
-    // Fetch books based on filters
+    // Fetch books and owner's data based on filters
     const books = await prisma.book.findMany({
       where: filters,
+      include: {
+        owner: true,
+      },
     });
 
     if (books.length === 0) {
       return next(new ErrorHandler("No books found for this owner", 404));
     }
 
-    // Calculate total earnings
+    // Calculate total earnings for the current period
     const totalEarnings = books.reduce((sum, book) => sum + book.price, 0);
+
+    // Calculate previous month earnings
+    const previousMonth = new Date();
+    previousMonth.setMonth(previousMonth.getMonth() - 1);
+    const firstDayPreviousMonth = new Date(previousMonth.getFullYear(), previousMonth.getMonth(), 1);
+    const lastDayPreviousMonth = new Date(previousMonth.getFullYear(), previousMonth.getMonth() + 1, 0);
+
+    const previousMonthBooks = await prisma.book.findMany({
+      where: {
+        ownerId: Number(ownerId),
+        createdAt: {
+          gte: firstDayPreviousMonth,
+          lte: lastDayPreviousMonth,
+        },
+      },
+    });
+
+    const previousMonthEarnings = previousMonthBooks.reduce((sum, book) => sum + book.price, 0);
 
     res.status(200).json({
       success: true,
+      owner: books[0].owner,
       books,
       totalEarnings,
+      previousMonthEarnings,
     });
   } catch (error) {
     console.error('Error fetching books by owner ID:', error);
     return next(new ErrorHandler("Internal Server Error", 500));
   }
 });
+
 
 // Update a book by ID
 export const updateBook = catchAsyncErrors(async (req, res, next) => {
