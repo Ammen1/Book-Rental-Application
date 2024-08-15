@@ -81,7 +81,7 @@ const Login = () => {
       localStorage.setItem('token', data.token);
 
       dispatch(signInSuccess(data));
-      navigate('/dashboard');
+      navigate('/');
     } catch (error) {
       dispatch(signInFailure(error.message));
       setOpenSnackbar(true);
@@ -95,19 +95,27 @@ const Login = () => {
   return (
     <Container
       component="main"
-      maxWidth="md"
+      maxWidth="false"
       sx={{
         height: '100vh',
+        width: '100%',
         display: 'flex',
         alignItems: 'center',
         justifyContent: 'center',
-        backgroundColor: '#cf1616',
+        backgroundColor: '#fff',
+        padding: 0,
       }}
     >
       <Grid
         container
         spacing={0}
-        sx={{ height: '100%', width: '100%', maxWidth: '1200px' }}
+        sx={{
+          height: '100%',
+          width: '100%',
+          maxWidth: '1200px',
+          display: 'flex',
+          flexDirection: 'row',
+        }}
       >
         {/* Left side */}
         <Grid
@@ -120,11 +128,8 @@ const Login = () => {
             alignItems: 'center',
             justifyContent: 'center',
             padding: isSmallScreen ? 2 : 4,
-            height: isSmallScreen ? 'auto' : '100%',
-            width: isSmallScreen ? '100%' : '720px',
-            borderRadius: isSmallScreen
-              ? '0 0 8px 8px'
-              : '8px 0 0 8px',
+            height: '100%',
+            borderRadius: isSmallScreen ? '0 0 8px 8px' : '8px 0 0 8px',
             position: isSmallScreen ? 'relative' : 'static',
             order: isSmallScreen ? 2 : 1,
           }}
@@ -152,9 +157,7 @@ const Login = () => {
             justifyContent: 'center',
             padding: isSmallScreen ? 2 : 4,
             height: '100%',
-            borderRadius: isSmallScreen
-              ? '8px 8px 0 0'
-              : '0 8px 8px 0',
+            borderRadius: isSmallScreen ? '8px 8px 0 0' : '0 8px 8px 0',
             backgroundColor: '#ffffff',
             boxShadow: '0 4px 8px rgba(0, 0, 0, 0.1)',
             order: isSmallScreen ? 1 : 2,
@@ -248,6 +251,7 @@ const Login = () => {
                 >
                   <MenuItem value="USER">User</MenuItem>
                   <MenuItem value="ADMIN">Admin</MenuItem>
+                  <MenuItem value="OWNER">Owner</MenuItem>
                 </Select>
               </FormControl>
               <FormControlLabel
@@ -266,10 +270,10 @@ const Login = () => {
                 fullWidth
                 variant="contained"
                 color="primary"
-                disabled={loading}
                 sx={{ mt: 3 }}
               >
-                {loading ? <CircularProgress size={24} /> : 'Sign In'}
+                Sign In 
+                 {/* <CircularProgress size={24} /> */}
               </Button>
               <Grid container justifyContent="flex-end">
                 <Grid item>
