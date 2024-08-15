@@ -146,10 +146,10 @@ const BooksTable = () => {
   }
 
   return (
-    <Box sx={{ width: '98%', overflowX: 'auto', mt: 10, ml: 1  }}>
+    <Box sx={{ width: '98%', overflowX: 'auto', mt: 9, ml: 1.5  }}>
       <TableContainer component={Paper} sx={{ width: '100%', backgroundColor: "#ffff", }}>
       <Box display="flex" mt="65px" justifyContent="space-between" alignItems="center" mb={isSmallScreen ? 1 : 2}>
-        <Typography variant="h6" fontWeight="bold" sx={{ color: '#000000', ml: "12px", mt: "10px", fontSize: isSmallScreen ? '1rem' : '1.25rem' }}>
+        <Typography variant="h6" fontWeight="bold" sx={{ color: '#000000', ml: "13px", mt: "8px", fontSize: isSmallScreen ? '1rem' : '1.25rem' }}>
           List of owners
         </Typography>
         <img
