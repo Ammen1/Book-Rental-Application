@@ -12,7 +12,16 @@ import {
     updateUserStatusFailure,
     updateUserStatusRequest,
     updateUserStatusSuccess,
+    deleteStart, 
+    deleteSuccess, 
+    deleteFailure ,
+    signupSuccess,
+    signupStart,
+    signupFailure,
+    
 } from './slices/userSlice';
+
+
 
 // Fetch Users Thunk
 export const fetchUsers = createAsyncThunk(
@@ -93,9 +102,6 @@ export const updateUser = createAsyncThunk(
   async ({ userId, updateData }, { dispatch, rejectWithValue }) => {
     dispatch(updateStart());
 
-    console.log('Updating user with ID:', userId); // Add this line
-    console.log('Update data:', updateData); // Add this line
-
     const token = localStorage.getItem('token');
     if (!token) {
       return rejectWithValue('No token found');
@@ -125,6 +131,41 @@ export const updateUser = createAsyncThunk(
     }
   }
 );
+
+
+export const deleteUser = createAsyncThunk(
+  'users/deleteUser',
+  async (userId, { dispatch, rejectWithValue }) => {
+    dispatch(deleteStart());
+
+    const token = localStorage.getItem('token');
+    if (!token) {
+      return rejectWithValue('No token found');
+    }
+
+    try {
+      const response = await fetch(`http://localhost:4000/api/v1/users/delete/${userId}`, {
+        method: 'DELETE',
+        headers: {
+          'Content-Type': 'application/json',
+          'Authorization': `Bearer ${token}`,
+        },
+      });
+
+      if (!response.ok) {
+        const errorMessage = await response.text();
+        return rejectWithValue(errorMessage);
+      }
+
+      dispatch(deleteSuccess(userId));
+      return userId;
+    } catch (error) {
+      dispatch(deleteFailure(error.message));
+      return rejectWithValue(error.message || 'Failed to delete user');
+    }
+  }
+);
+
 
 // Update User Status Thunk
 export const updateUserStatus = createAsyncThunk(
@@ -158,6 +199,37 @@ export const updateUserStatus = createAsyncThunk(
     } catch (error) {
       dispatch(updateUserStatusFailure(error.message));
       return rejectWithValue(error.message || 'Failed to update user status');
+    }
+  }
+);
+
+
+
+export const signupUser = createAsyncThunk(
+  'users/signupUser',
+  async (userData, { dispatch, rejectWithValue }) => {
+    dispatch(signupStart());
+
+    try {
+      const response = await fetch('http://localhost:4000/api/v1/auth/register', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify(userData),
+      });
+
+      if (!response.ok) {
+        const errorMessage = await response.text();
+        return rejectWithValue(errorMessage);
+      }
+
+      const data = await response.json();
+      dispatch(signupSuccess(data.user));
+      return data.user;
+    } catch (error) {
+      dispatch(signupFailure(error.message));
+      return rejectWithValue(error.message || 'Failed to signup user');
     }
   }
 );
