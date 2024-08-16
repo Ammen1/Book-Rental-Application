@@ -1,29 +1,6 @@
-// userThunks.js
-import axios from '../axiosConfig';
 import { createAsyncThunk } from '@reduxjs/toolkit';
-import {
-  updateBookApprovalRequest,
-  updateBookApprovalSuccess,
-  updateBookApprovalFailure
-} from './user/userActions';
 
 const API_URL = 'http://localhost:4000/api/v1/book';
-
-// // Thunk action to update book approval status
-// export const updateBookApproval = (userId, bookIndex, approved) => async (dispatch) => {
-//   dispatch(updateBookApprovalRequest());
-
-//   try {
-//     const response = await axios.put(`http://localhost:4000/api/v1/book/${bookIndex}`, {
-//       approved
-//     });
-//     dispatch(updateBookApprovalSuccess(userId, bookIndex, approved));
-//   } catch (error) {
-//     dispatch(updateBookApprovalFailure(error.message));
-//   }
-// };
-
-// Replace with your actual API URL
 
 export const fetchBooks = createAsyncThunk(
   'books/fetchBooks',
@@ -80,7 +57,7 @@ export const fetchBooksByOwnerId = createAsyncThunk(
       }
 
       const data = await response.json();
-      return data; // Return the full data object
+      return data;
     } catch (error) {
       return rejectWithValue(error.message || 'An unexpected error occurred');
     }

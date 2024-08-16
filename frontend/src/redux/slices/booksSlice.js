@@ -5,7 +5,8 @@ const booksSlice = createSlice({
   name: 'books',
   initialState: {
     books: [],
-    totalEarnings: 0,  // Add totalEarnings to the state
+    totalEarnings: 0,
+    previousMonthEarnings: 0,
     loading: false,
     error: null,
   },
