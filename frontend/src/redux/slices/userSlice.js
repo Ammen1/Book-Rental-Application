@@ -1,5 +1,5 @@
 import { createSlice } from '@reduxjs/toolkit';
-import { updateUser, updateUserStatus, fetchUsers, updateBookApproval } from '../userThunks';
+import { updateUser, updateUserStatus, fetchUsers, updateBookApproval, deleteUser } from '../userThunks';
 
 const initialState = {
   currentUser: null,
@@ -36,15 +36,15 @@ const userSlice = createSlice({
       state.loading = false;
       state.error = action.payload;
     },
-    deleteUserStart: (state) => {
+    deleteStart: (state) => {
       state.loading = true;
       state.error = null;
     },
-    deleteUserSuccess: (state) => {
+    deleteSuccess: (state) => {
       state.currentUser = null;
       state.loading = false;
     },
-    deleteUserFailure: (state, action) => {
+    deleteFailure: (state, action) => {
       state.loading = false;
       state.error = action.payload;
     },
@@ -99,6 +99,18 @@ const userSlice = createSlice({
       );
     },
     updateUserStatusFailure: (state, action) => {
+      state.loading = false;
+      state.error = action.payload;
+    },
+    signupStart: (state) => {
+      state.loading = true;
+      state.error = null;
+    },
+    signupSuccess: (state, action) => {
+      state.loading = false;
+      state.users.push(action.payload);
+    },
+    signupFailure: (state, action) => {
       state.loading = false;
       state.error = action.payload;
     },
@@ -185,9 +197,9 @@ export const {
   updateStart,
   updateSuccess,
   updateFailure,
-  deleteUserStart,
-  deleteUserSuccess,
-  deleteUserFailure,
+  deleteStart,
+  deleteSuccess,
+  deleteFailure,
   signoutSuccess,
   fetchUsersStart,
   fetchUsersSuccess,
@@ -198,6 +210,9 @@ export const {
   updateUserStatusRequest,
   updateUserStatusSuccess,
   updateUserStatusFailure,
+  signupStart,
+  signupSuccess,
+  signupFailure,
 } = userSlice.actions;
 
 export default userSlice.reducer;
