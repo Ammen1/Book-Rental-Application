@@ -143,7 +143,6 @@ Book to Category: A many-to-one relationship where each Book belongs to one Cate
 ![Company Logo](ScreenShotimage/Screenshot2.png)
 ![Company Logo](ScreenShotimage/Screenshot3.png)
 ![Company Logo](ScreenShotimage/Screenshot4.png)
-![Company Logo](ScreenShotimage/Screenshot5.png)
 ![Company Logo](ScreenShotimage/Screenshot6.png)
 ![Company Logo](ScreenShotimage/Screenshot7.png)
 ![Company Logo](ScreenShotimage/Screenshot8.png)
