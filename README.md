@@ -15,7 +15,6 @@ The Book Rental Application is a full-stack project that allows users to rent bo
   - **System Admins:** Manage book owners, approve books, and view statistics.
 
 - **Access Control:** Implemented using CASL to manage permissions and access to resources.
-
 - **UI Components:** Built with Material UI and Material React Table for a modular and responsive design.
 
 - **Authentication:** JWT-based authentication for secure access.
@@ -140,9 +139,20 @@ Book to Category: A many-to-one relationship where each Book belongs to one Cate
 5. **Create a Pull Request**
 
    Go to the original repository and create a pull request to merge your changes.
+![Company Logo](ScreenShotimage/Screenshot1.png)
+![Company Logo](ScreenShotimage/Screenshot2.png)
+![Company Logo](ScreenShotimage/Screenshot3.png)
+![Company Logo](ScreenShotimage/Screenshot4.png)
+![Company Logo](ScreenShotimage/Screenshot5.png)
+![Company Logo](ScreenShotimage/Screenshot6.png)
+![Company Logo](ScreenShotimage/Screenshot7.png)
+![Company Logo](ScreenShotimage/Screenshot8.png)
+![Company Logo](ScreenShotimage/Screenshot9.png)
+![Company Logo](ScreenShotimage/Screenshot10.png)
+![Company Logo](ScreenShotimage/Screenshot11.png)
+![Company Logo](ScreenShotimage/Screenshot12.png)
+![Company Logo](ScreenShotimage/Screenshot13.png)
+![Company Logo](ScreenShotimage/Screenshot14.png)
 
-### License
-
-This project is licensed under the MIT License. See the [LICENSE](LICENSE) file for details.
 
 
