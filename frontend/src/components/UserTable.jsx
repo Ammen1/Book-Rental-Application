@@ -12,7 +12,6 @@ import DeleteIcon from '@mui/icons-material/Delete';
 import CheckCircleIcon from '@mui/icons-material/CheckCircle';
 import { deepOrange, deepPurple } from '@mui/material/colors';
 import { RemoveRedEye } from '@mui/icons-material';
-import { useNavigate } from 'react-router-dom'; // Import useNavigate
 
 
 const UserTable = () => {
@@ -69,17 +68,13 @@ const UserTable = () => {
 
     } catch (error) {
       console.error('Error updating user status:', error);
-      alert('Failed to update user status. Please try again.');
-  
+      alert('Failed to update user status. Please try again.')
       setUserStatus(prevStatus => ({
         ...prevStatus,
         [userId]: currentStatus
       }));
     }
   };
-  
-  
-  
 
   const handleCloseDialog = () => {
     setOpenDialog(false);

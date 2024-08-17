@@ -66,7 +66,9 @@ export const createBook = catchAsyncErrors(async (req, res, next) => {
 export const listBooks = catchAsyncErrors(async (req, res, next) => {
     const { title, author, categoryId, ownerId, available, approved, ownerLocation, price } = req.query;
   
-    const filter = {};
+    const filter = {available: true,
+      approved: true
+    };
     if (title) filter.title = { contains: title, mode: 'insensitive' };
     if (author) filter.author = { contains: author, mode: 'insensitive' };
     if (categoryId) filter.categoryId = Number(categoryId);
@@ -104,17 +106,30 @@ export const getBookById = catchAsyncErrors(async (req, res, next) => {
     if (!book) {
       return next(new ErrorHandler("Book not found", 404));
     }
-    console.log(book)
 
+    // Fetch related books
+    const relatedBooks = await prisma.book.findMany({
+      where: {
+        id: { not: Number(id) }, // Exclude the current book
+        title: book.title,
+        location: book.location,
+        ownerId: book.ownerId,
+      },
+      take: 5, // Limit the number of related books returned
+    });
+
+    // Respond with the book and related books
     res.status(200).json({
       success: true,
       book,
+      relatedBooks,
     });
   } catch (error) {
     console.error('Error fetching book by ID:', error);
     return next(new ErrorHandler("Internal Server Error", 500));
   }
 });
+
 
 
 // Get books by owner ID
@@ -194,7 +209,7 @@ export const getBooksByOwnerId = catchAsyncErrors(async (req, res, next) => {
 // Update a book by ID
 export const updateBook = catchAsyncErrors(async (req, res, next) => {
   const { id } = req.params;
-  const { title, author, categoryId, ownerId, quantity, available, approved } = req.body;
+  const { title, author, categoryId, ownerId, quantity, available, approved, rating } = req.body;
 
   if (!title && !author && !categoryId && !ownerId && quantity === undefined && available === undefined && approved === undefined) {
     return next(new ErrorHandler("At least one field is required to update", 400));
@@ -211,6 +226,7 @@ export const updateBook = catchAsyncErrors(async (req, res, next) => {
         quantity,
         available,
         approved,
+        rating,
       },
     });
 

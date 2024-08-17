@@ -1,42 +1,110 @@
-import React from 'react';
-import { Card, CardContent, CardMedia, CardActionArea, Typography, Box, Rating } from '@mui/material';
+/* eslint-disable react/prop-types */
+import React, { useState } from 'react';
+import { Card, CardContent, CardMedia, CardActionArea, Typography, Box, Rating, IconButton, Tooltip } from '@mui/material';
 import { motion } from 'framer-motion';
 import numeral from 'numeral'; 
-import {Link } from 'react-router-dom';
+import { Link } from 'react-router-dom';
+import { Info as InfoIcon, Share as ShareIcon, Favorite as FavoriteIcon } from '@mui/icons-material';
+
 const MotionCard = motion(Card);
 
-const BookCard = ({ book, handleCardClick }) => {
-  const averageRating = 10 > 0 ? 10/ 3 : 0; 
+const BookCard = ({ book }) => {
+  const [liked, setLiked] = useState(false); 
 
-  // Format the price using numeral.js
-  const formattedPrice = book.price === 0 ? 'Free' : numeral(book.price).format('0,0'); 
+  const averageRating = book.ratings && book.ratings.length > 0 
+    ? book.ratings.reduce((sum, rating) => sum + rating, 0) / book.ratings.length 
+    : 3.60; 
+
+  const formattedPrice = book.price === 0 || !book.price 
+    ? 'Free' 
+    : `${numeral(book.price).format('0,0')} birr`;
+
+  const handleLike = () => {
+    setLiked((prevLiked) => !prevLiked); 
+  };
 
   return (
     <MotionCard
-      sx={{ borderRadius: 2, boxShadow: 3, cursor: 'pointer', '&:hover': { border: '1px solid #ddd' }, width: 250, ml:1 }}
-      whileHover={{ scale: 1.005 }}
-      onClick={() => handleCardClick(book.id)}
+      sx={{
+        borderRadius: 2,
+        boxShadow: 3,
+        width: { xs: '100%', sm: '90%', md: 300 }, 
+        ml: 1,
+        transition: 'transform 0.3s ease-in-out',
+        position: 'relative',
+        '&:hover': {
+          transform: 'scale(1.000003)',
+          border: '1px solid #ddd',
+        },
+      }}
     >
-      <CardActionArea>
-      <Link to='/book/{book.id}' >
+      <CardActionArea >
         <CardMedia
           component="img"
           height="170"
-          width="400px"
-          image="th.jpeg"
+          image={book.image || "th.jpeg"}
           alt={book.title}
         />
-        </Link>
+        <Box
+          sx={{
+            position: 'absolute',
+            top: 8,
+            right: 8,
+            display: 'flex',
+            flexDirection: 'column',
+            gap: 1,
+          }}
+        >
+          <Tooltip title="View Details">
+            <IconButton 
+              component={Link}
+              to={`/book/${book.id}`}
+              sx={{ 
+                color: '#fff', 
+                backgroundColor: 'rgba(0,0,0,0.5)', 
+                '&:hover': { backgroundColor: 'rgba(0,0,0,0.7)' } 
+              }}
+              aria-label="info"
+            >
+              <InfoIcon />
+            </IconButton>
+          </Tooltip>
+          <Tooltip title="Share">
+            <IconButton 
+              sx={{ 
+                color: '#fff', 
+                backgroundColor: 'rgba(0,0,0,0.5)', 
+                '&:hover': { backgroundColor: 'rgba(0,0,0,0.7)' } 
+              }}
+              aria-label="share"
+            >
+              <ShareIcon />
+            </IconButton>
+          </Tooltip>
+          <Tooltip title={liked ? "Unlike" : "Like"}>
+            <IconButton 
+              sx={{ 
+                color: liked ? '#f50057' : '#fff',
+                backgroundColor: 'rgba(0,0,0,0.5)', 
+                '&:hover': { backgroundColor: 'rgba(0,0,0,0.7)' } 
+              }}
+              aria-label="like"
+              onClick={handleLike}
+            >
+              <FavoriteIcon />
+            </IconButton>
+          </Tooltip>
+        </Box>
         <CardContent>
           <Typography variant="h6">{book.title}</Typography>
-          <Typography variant="body2">location: {book.owner.location}</Typography>
-          <Typography variant="body2" color="text.secondary">author:{book.author}</Typography>
-          <Typography variant="body2" color="text.secondary">category: {book.category.name}</Typography>
+          <Typography variant="body2">{book.owner.location}</Typography>
+          <Typography variant="body2" color="text.secondary">Author: {book.author}</Typography>
+          <Typography variant="body2" color="text.secondary">{book.category.name}</Typography>
           <Box sx={{ display: 'flex', alignItems: 'center', mt: 1 }}>
             <Rating value={averageRating} readOnly precision={0.5} />
           </Box>
           <Typography variant="body1" sx={{ mt: 1 }}>
-            {formattedPrice} birr
+            {formattedPrice}
           </Typography>
         </CardContent>
       </CardActionArea>

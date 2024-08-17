@@ -38,6 +38,8 @@ model Book {
   ownerId     Int
   price       Float?     @default(0.00)
   quantity    Int
+  description String?
+  rating      Float?     @default(0)
   available   Boolean    @default(false)
   approved    Boolean    @default(false)
   rentals     Rental[]

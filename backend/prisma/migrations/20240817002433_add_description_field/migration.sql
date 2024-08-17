@@ -1,0 +1,2 @@
+-- AlterTable
+ALTER TABLE "Book" ADD COLUMN     "rating" DOUBLE PRECISION DEFAULT 0;

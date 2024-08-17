@@ -1,6 +1,5 @@
 
 import { Paper, Typography, Box } from '@mui/material';
-import CustomPieChart from '../PieChart';
 import CategoryChartContainer from '../CategoryChartContainer';
 
 const StatCard = ({ title, subtitle, value, change, additionalInfo }) => {
@@ -15,7 +14,7 @@ const StatCard = ({ title, subtitle, value, change, additionalInfo }) => {
         display: 'flex',
         flexDirection: 'column',
         justifyContent: 'space-between',
-        minHeight: '200px',
+        minHeight: '180px',
       }}
     >
       <Box mb={2}>

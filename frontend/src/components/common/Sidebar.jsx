@@ -12,6 +12,7 @@ import {
   IconButton,
   useMediaQuery,
   useTheme,
+  ListSubheader
 } from '@mui/material';
 import {
   Dashboard as DashboardIcon,
@@ -20,12 +21,13 @@ import {
   Settings as SettingsIcon,
   Logout as LogoutIcon,
   Menu as MenuIcon,
+  Notifications as NotificationsIcon,
+  ExitToApp as ExitToAppIcon
 } from '@mui/icons-material';
 import { Link, useLocation } from 'react-router-dom';
 import { useDispatch, useSelector } from 'react-redux';
-import { signoutSuccess } from '../../redux/slices//userSlice';
+import { signoutSuccess } from '../../redux/slices/userSlice';
 import Navbar from './Navbar';
-
 
 const EnhancedSidebar = () => {
   const theme = useTheme();
@@ -34,7 +36,6 @@ const EnhancedSidebar = () => {
   const location = useLocation();
   const dispatch = useDispatch();
   const { currentUser } = useSelector((state) => state.user);
-  console.log(currentUser.user.role)
 
   const toggleDrawer = () => {
     setDrawerOpen(!drawerOpen);
@@ -57,17 +58,25 @@ const EnhancedSidebar = () => {
   };
 
   const menuItems = [
-    { text: 'Dashboard', icon: <DashboardIcon fontSize="small" />, roles: ['ADMIN', 'OWNER'], path: '/dashboard' },
-    { text: 'Books', icon: <BookIcon fontSize="small" />, roles: ['ADMIN', 'OWNER'], path: '/books' },
-    { text: 'Owners', icon: <PersonIcon fontSize="small" />, roles: ['ADMIN'], path: '/owners' },
-    { text: 'Book Upload', icon: <BookIcon fontSize="small" />, roles: ['ADMIN'], path: '/upload-book' },
-    { text: 'Settings', icon: <SettingsIcon fontSize="small" />, roles: ['ADMIN', 'OWNER'], path: '/settings' },
+    { text: 'Dashboard', icon: <DashboardIcon fontSize="14px" />, roles: ['ADMIN', 'OWNER'], path: '/dashboard' },
+    { text: 'Books', icon: <BookIcon fontSize="14px" />, roles: ['ADMIN'], path: '/books' },
+    { text: 'Owners', icon: <PersonIcon fontSize="10px" />, roles: ['ADMIN'], path: '/owners' },
+    { text: 'Book Upload', icon: <BookIcon fontSize="10px" />, roles: ['ADMIN'], path: '/upload-book' },
+  ];
+
+  const settingsItems = [
+    { text: 'Notification', icon: <NotificationsIcon fontSize="10px" color="inherit"/>, roles: ['ADMIN', 'OWNER'], path: '/notification' },
+    { text: 'Settings', icon: <SettingsIcon fontSize="10px" />, roles: ['ADMIN', 'OWNER'], path: '/settings' },
+    { text: 'Login as Book Owner', icon: <ExitToAppIcon fontSize="10px" />, roles: ['ADMIN'], path: '/login-as-book-owner' },
+
   ];
 
   const getUserRole = () => {
     if (currentUser.user.role === 'ADMIN') return 'ADMIN';
     if (currentUser.user.role === 'OWNER') return 'OWNER';
-
+    else {
+      return 'USER';
+    }
   };
 
   const drawerContent = (
@@ -100,7 +109,7 @@ const EnhancedSidebar = () => {
             color: '#00ABFF',
             fontWeight: 'bold',
             fontFamily: 'Roboto, sans-serif',
-            fontSize: { xs: '1.05rem', sm: '1.05rem' },
+            fontSize: { xs: '1rem', sm: '1rem' },
           }}
         >
           Book Rent
@@ -108,42 +117,93 @@ const EnhancedSidebar = () => {
       </Box>
       <Divider sx={{ mb: 2, borderColor: '#334155' }} />
       <List>
-   {menuItems
-     .filter((item) => item.roles.includes(getUserRole()))
-     .map((item, index) => (
-       <ListItem
-         button
-         key={index}
-         component={Link}
-         to={item.path} 
-         selected={location.pathname === item.path} 
-         sx={{
-           mb: 1,
-           borderRadius: 1,
-           '&.Mui-selected': {
-             backgroundColor: '#3B82F6',
-             color: '#FFF',
-           },
-           '&:hover': {
-             backgroundColor: '#3B82F6',
-             color: '#FFF',
-           },
-         }}
-       >
-         <ListItemIcon sx={{ color: 'inherit', minWidth: 40 }}>
-           {item.icon}
-         </ListItemIcon>
-         <ListItemText
-           primary={item.text}
-           sx={{
-             color: 'inherit',
-             fontFamily: 'Roboto, sans-serif',
-             fontSize: { xs: '0.875rem', sm: '1rem' },
-           }}
-         />
-       </ListItem>
-     ))}
- </List>
+        {menuItems
+          .filter((item) => item.roles.includes(getUserRole()))
+          .map((item, index) => (
+            <ListItem
+              button
+              key={index}
+              component={Link}
+              to={item.path} 
+              selected={location.pathname === item.path} 
+              sx={{
+                mb: 1,
+                borderRadius: 1,
+                '&.Mui-selected': {
+                  backgroundColor: '#3B82F6',
+                  color: '#FFF',
+                },
+                '&:hover': {
+                  backgroundColor: '#3B82F6',
+                  color: '#FFF',
+                },
+              }}
+            >
+              <ListItemIcon sx={{ color: 'inherit', minWidth: 40 }}>
+                {item.icon}
+              </ListItemIcon>
+              <ListItemText
+                primary={item.text}
+                sx={{
+                  color: 'inherit',
+                  fontFamily: 'Roboto, sans-serif',
+                  fontSize: { xs: '0.5rem', sm: '1rem' },
+                }}
+              />
+              {item.text === 'Dashboard' && (
+                <Typography
+                  variant="body2"
+                  sx={{
+                    ml: 2,
+                    color: '#E2E8F0',
+                    fontFamily: 'Roboto, sans-serif',
+                    fontSize: '0.7rem',
+                  }}
+                >
+                  {currentUser.user.role}
+                </Typography>
+              )}
+            </ListItem>
+          ))}
+      </List>
+      <Divider sx={{ my: 2, borderColor: '#334155' }} />
+      <List>
+        {settingsItems
+          .filter((item) => item.roles.includes(getUserRole()))
+          .map((item, index) => (
+            <ListItem
+              button
+              key={index}
+              component={Link}
+              to={item.path} 
+              selected={location.pathname === item.path} 
+              sx={{
+                mb: 1,
+                borderRadius: 1,
+                '&.Mui-selected': {
+                  backgroundColor: '#3B82F6',
+                  color: '#FFF',
+                },
+                '&:hover': {
+                  backgroundColor: '#3B82F6',
+                  color: '#FFF',
+                },
+              }}
+            >
+              <ListItemIcon sx={{ color: 'inherit', minWidth: 40 }}>
+                {item.icon}
+              </ListItemIcon>
+              <ListItemText
+                primary={item.text}
+                sx={{
+                  color: 'inherit',
+                  fontFamily: 'Roboto, sans-serif',
+                  fontSize: { xs: '0.5rem', sm: '1rem' },
+                }}
+              />
+            </ListItem>
+          ))}
+      </List>
       {!isSmallScreen && (
         <Box sx={{ mt: 'auto', mb: 2, p: 2 }}>
           <Button
@@ -171,7 +231,7 @@ const EnhancedSidebar = () => {
 
   return (
     <>
-        <Navbar />
+      <Navbar />
       <Drawer
         variant={isSmallScreen ? "temporary" : "permanent"}
         open={isSmallScreen ? drawerOpen : true}
@@ -205,7 +265,6 @@ const EnhancedSidebar = () => {
             '&:hover': {
               backgroundColor: '#3B82F6',
             },
-            color: '#E2E8F0',
           }}
           onClick={toggleDrawer}
         >
