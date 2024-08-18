@@ -12,7 +12,6 @@ import {
   IconButton,
   useMediaQuery,
   useTheme,
-  ListSubheader
 } from '@mui/material';
 import {
   Dashboard as DashboardIcon,
@@ -28,6 +27,8 @@ import { Link, useLocation } from 'react-router-dom';
 import { useDispatch, useSelector } from 'react-redux';
 import { signoutSuccess } from '../../redux/slices/userSlice';
 import Navbar from './Navbar';
+import { useEffect } from 'react';
+import { useNavigate } from 'react-router-dom';
 
 const EnhancedSidebar = () => {
   const theme = useTheme();
@@ -35,6 +36,7 @@ const EnhancedSidebar = () => {
   const [drawerOpen, setDrawerOpen] = useState(false);
   const location = useLocation();
   const dispatch = useDispatch();
+  const navigate = useNavigate()
   const { currentUser } = useSelector((state) => state.user);
 
   const toggleDrawer = () => {
@@ -78,6 +80,11 @@ const EnhancedSidebar = () => {
       return 'USER';
     }
   };
+  useEffect(() => {
+    if (!currentUser) {
+      navigate('/signin'); 
+    }
+  }, [currentUser, navigate]);
 
   const drawerContent = (
     <Box sx={{ display: 'flex', flexDirection: 'column', height: '100%' }}>
@@ -124,8 +131,8 @@ const EnhancedSidebar = () => {
               button
               key={index}
               component={Link}
-              to={item.path} 
-              selected={location.pathname === item.path} 
+              to={item.path}
+              selected={location.pathname === item.path}
               sx={{
                 mb: 1,
                 borderRadius: 1,

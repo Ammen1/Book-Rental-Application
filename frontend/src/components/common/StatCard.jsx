@@ -1,4 +1,3 @@
-
 import { Paper, Typography, Box } from '@mui/material';
 import CategoryChartContainer from '../CategoryChartContainer';
 

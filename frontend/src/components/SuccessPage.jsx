@@ -31,7 +31,7 @@ const SuccessPage = () => {
         alignItems: 'center',
         justifyContent: 'center',
         height: '100vh',
-        backgroundColor: '#e0f7fa',
+        backgroundColor: '#240658',
         padding: 4,
         animation: `${fadeIn} 1s ease-in-out`,
       }}
@@ -47,13 +47,13 @@ const SuccessPage = () => {
             borderRadius: 3,
             boxShadow: 3,
             backgroundColor: '#ffffff',
-            maxWidth: 600,
+            maxWidth: 400,
             width: '100%',
             textAlign: 'center',
           }}
         >
           <img
-            src='Frame.png' // Updated to a dynamic import path
+            src='Frame.png'
             alt="Success"
             style={{ width: '60%', height: 'auto', borderRadius: '12px', marginBottom: '20px' }}
           />

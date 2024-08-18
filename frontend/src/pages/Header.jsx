@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import { AppBar, Toolbar, Typography, Box, TextField, InputAdornment, IconButton, Menu, MenuItem, Avatar, Tooltip, Badge } from '@mui/material';
-import { useNavigate } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom'; // Import Link and useNavigate
 import SearchIcon from '@mui/icons-material/Search';
 import MoreVertIcon from '@mui/icons-material/MoreVert';
 import PersonIcon from '@mui/icons-material/Person';
@@ -10,6 +10,7 @@ import FavoriteIcon from '@mui/icons-material/Favorite';
 const Header = ({ handleMenuItemClick, handleUserMenuItemClick }) => {
   const [anchorEl, setAnchorEl] = useState(null);
   const [userMenuAnchorEl, setUserMenuAnchorEl] = useState(null);
+  const navigate = useNavigate(); // Initialize useNavigate
 
   const open = Boolean(anchorEl);
   const userMenuOpen = Boolean(userMenuAnchorEl);
@@ -86,9 +87,9 @@ const Header = ({ handleMenuItemClick, handleUserMenuItemClick }) => {
             open={open}
             onClose={handleMenuClose}
           >
-            <MenuItem onClick={() => handleMenuItemClick('/signin')}>Sign In</MenuItem>
-            <MenuItem onClick={() => handleMenuItemClick('/signup')}>Sign Up</MenuItem>
-            <MenuItem onClick={() => handleMenuItemClick('/books')}>Browse Books</MenuItem>
+            <MenuItem component={Link} to="/signin">Sign In</MenuItem> 
+            <MenuItem component={Link} to="/signup">Sign Up</MenuItem> 
+            <MenuItem component={Link} to="/books">Browse Books</MenuItem> 
           </Menu>
           <Tooltip title="User Menu">
             <IconButton
@@ -110,9 +111,9 @@ const Header = ({ handleMenuItemClick, handleUserMenuItemClick }) => {
             open={userMenuOpen}
             onClose={handleUserMenuClose}
           >
-            <MenuItem onClick={() => handleUserMenuItemClick('/profile')}>Profile</MenuItem>
-            <MenuItem onClick={() => handleUserMenuItemClick('/settings')}>Settings</MenuItem>
-            <MenuItem onClick={() => handleUserMenuItemClick('/logout')}>Logout</MenuItem>
+            <MenuItem onClick={() => navigate('/profile')}>Profile</MenuItem>
+            <MenuItem onClick={() => navigate('/settings')}>Settings</MenuItem>
+            <MenuItem onClick={() => navigate('/logout')}>Logout</MenuItem>
           </Menu>
         </Box>
       </Toolbar>

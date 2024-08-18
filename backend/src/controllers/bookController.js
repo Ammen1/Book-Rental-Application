@@ -107,22 +107,41 @@ export const getBookById = catchAsyncErrors(async (req, res, next) => {
       return next(new ErrorHandler("Book not found", 404));
     }
 
-    // Fetch related books
-    const relatedBooks = await prisma.book.findMany({
+    // Fetch related Books By Location 
+    const relatedBooksByLocation = await prisma.book.findMany({
       where: {
-        id: { not: Number(id) }, // Exclude the current book
-        title: book.title,
+        id: { not: Number(id) },
         location: book.location,
         ownerId: book.ownerId,
       },
-      take: 5, // Limit the number of related books returned
+      include: {
+        owner: true, 
+        category: true, 
+      },
+      take: 5, 
     });
+    console.log(relatedBooksByLocation)
+
+        // Fetch related books by name or tilte
+      const relatedBooksByTiltes = await prisma.book.findMany({
+        where: {
+          id: { not: Number(id) },
+          title: book.title,
+        },
+        include: {
+          owner: true, 
+          category: true, 
+        },
+        take: 5, 
+      });
+      console.log(relatedBooksByTiltes )
 
     // Respond with the book and related books
     res.status(200).json({
       success: true,
       book,
-      relatedBooks,
+      relatedBooksByLocation,
+      relatedBooksByTiltes,
     });
   } catch (error) {
     console.error('Error fetching book by ID:', error);

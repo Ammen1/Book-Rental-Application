@@ -11,6 +11,7 @@ import BookForm from './components/books/BookForm';
 import SuccessPage from './components/SuccessPage';
 import HomePage from './pages/Home';
 import BookDetailsPage from './components/books/BookDetails';
+import NotFound from './components/NotFound';
 
 const App = () => {
   const location = useLocation();
@@ -18,7 +19,7 @@ const App = () => {
   // Check if the route is for a page where the sidebar should be hidden
   const isAuthRoute = useMemo(() => {
     // List of exact paths for which sidebar should be hidden
-    const exactPaths = ['/signup', '/signin', '/success', '/'];
+    const exactPaths = ['/signup', '/signin', '/success', '/', '*'];
 
     // Check if the current path is one of the exact paths
     const isExactPath = exactPaths.includes(location.pathname);
@@ -44,6 +45,8 @@ const App = () => {
           <Route path="/books" element={<BooksTable />} />
           <Route path="/upload-book" element={<BookForm />} />
           <Route path="/success" element={<SuccessPage />} />
+          <Route path="*" element={<NotFound />} /> 
+
         </Routes>
       </div>
     </div>

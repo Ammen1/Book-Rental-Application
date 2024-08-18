@@ -2,6 +2,7 @@ import { PieChart, Pie, Cell, Tooltip, ResponsiveContainer } from 'recharts';
 
 const COLORS = ['#FF2727', '#006AFF', '#52C93F', '#FFBB28', '#FF8042'];
 
+// eslint-disable-next-line react/prop-types
 const CustomPieChart = ({ data = [] }) => {
   // Ensure data is an array and has elements
   if (!Array.isArray(data) || data.length === 0) {

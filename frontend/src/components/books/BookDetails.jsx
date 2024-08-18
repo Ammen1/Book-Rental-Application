@@ -24,6 +24,7 @@ const BookDetailsPage = () => {
   const isSmallScreen = useMediaQuery(theme.breakpoints.down('sm'));
   const [book, setBook] = useState(null);
   const [relatedBooks, setRelatedBooks] = useState([]);
+  const [relatedBooksTilte, setRelatedBooksTilte] = useState([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
   const [rating, setRating] = useState(0);
@@ -39,7 +40,8 @@ const BookDetailsPage = () => {
       .then((response) => {
         if (response.data.success) {
           setBook(response.data.book);
-          setRelatedBooks(response.data.relatedBooks);
+          setRelatedBooks(response.data.relatedBooksByLocation);
+          setRelatedBooksTilte(response.data.relatedBooksByTiltes)
         } else {
           setError('Failed to fetch book details. Please try again later.');
         }
@@ -153,11 +155,10 @@ const BookDetailsPage = () => {
             </Card>
           </Grid>
         </Grid>
-
         {relatedBooks.length > 0 && (
           <Box sx={{ mt: 4 }}>
             <Typography variant="h5" sx={{ fontWeight: 'bold', mb: 2 }}>
-              Related Books
+              Related Books Based on Location and Owners
             </Typography>
             <Grid container spacing={3}>
               {relatedBooks.map((relatedBook) => (
@@ -183,7 +184,52 @@ const BookDetailsPage = () => {
                         variant="outlined"
                         color="primary"
                         sx={{ mt: 1 }}
-                        href={`/books/${relatedBook.id}`}
+                        href={`/book/${relatedBook.id}`}
+                      >
+                        View Details
+                      </Button>
+                    </CardContent>
+                  </Card>
+                </Grid>
+              ))}
+            </Grid>
+          </Box>
+        )}
+
+        
+        {relatedBooksTilte.length > 0 && (
+          <Box sx={{ mt: 4 }}>
+            <Typography variant="h5" sx={{ fontWeight: 'bold', mb: 2 }}>
+              Related Books Based on Books Name 
+            </Typography>
+            <Grid container spacing={3}>
+              {relatedBooksTilte.map((relatedBooktilte) => (
+                <Grid item xs={12} sm={6} md={4} key={relatedBooktilte.id}>
+                  <Card>
+                    <CardMedia
+                      component="img"
+                      height="200"
+                      image={relatedBooktilte.image || '/th.jpeg'}
+                      alt={relatedBooktilte.title}
+                    />
+                    <CardContent>
+                      <Typography variant="h6" gutterBottom>
+                        {relatedBooktilte.title}
+                      </Typography>
+                      <Typography variant="body2" color="text.secondary" paragraph>
+                        by {relatedBooktilte.author}
+                      </Typography>
+                      <Typography variant='body2' color='text.secondary' paragraph>
+                        {relatedBooktilte.owner.location}
+                      </Typography>
+                      <Typography variant="body2" color="text.primary" paragraph>
+                        Rental Price: {relatedBooktilte.price}
+                      </Typography>
+                      <Button
+                        variant="outlined"
+                        color="primary"
+                        sx={{ mt: 1 }}
+                        href={`/book/${relatedBooktilte.id}`}
                       >
                         View Details
                       </Button>
