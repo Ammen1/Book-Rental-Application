@@ -32,7 +32,7 @@ const BookDetailsPage = () => {
 
   useEffect(() => {
     axios
-      .get(`http://localhost:4000/api/v1/book/${id}`, {
+      .get(`hhttps://book-rental-application.onrender.com/api/v1/book/${id}`, {
         headers: {
           Authorization: `Bearer ${localStorage.getItem('token')}`,
         },
@@ -56,7 +56,7 @@ const BookDetailsPage = () => {
   const handleRatingChange = (event, newValue) => {
     setRating(newValue);
     axios.put(
-      `http://localhost:4000/api/v1/book/${id}`,
+      `https://book-rental-application.onrender.com/api/v1/book/${id}`,
       { rating: newValue },
       {
         headers: {

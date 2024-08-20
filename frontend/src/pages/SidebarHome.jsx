@@ -9,7 +9,7 @@ const Sidebar = ({ author, setAuthor, title, setTitle, location, setLocation, se
     const token = localStorage.getItem('token');
     const fetchCategories = async () => {
       try {
-        const response = await axios.get('http://localhost:4000/api/v1/categories', 
+        const response = await axios.get('https://book-rental-application.onrender.com/api/v1/categories', 
           { headers: { Authorization: `Bearer ${token}` } }
         ); 
         setCategories(response.data.categories); 

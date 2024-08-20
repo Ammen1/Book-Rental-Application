@@ -15,7 +15,7 @@ const HomePage = () => {
   const [category, setCategory] = useState('')
 
   useEffect(() => {
-    axios.get('http://localhost:4000/api/v1/book', {
+    axios.get('https://book-rental-application.onrender.com/api/v1/book', {
       headers: {
         Authorization: `Bearer ${localStorage.getItem('token')}`
       }

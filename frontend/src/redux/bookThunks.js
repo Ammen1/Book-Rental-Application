@@ -1,6 +1,6 @@
 import { createAsyncThunk } from '@reduxjs/toolkit';
 
-const API_URL = 'http://localhost:4000/api/v1/book';
+const API_URL = 'https://book-rental-application.onrender.com/api/v1/book';
 
 export const fetchBooks = createAsyncThunk(
   'books/fetchBooks',

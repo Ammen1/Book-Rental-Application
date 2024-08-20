@@ -82,7 +82,7 @@ const Signup = () => {
       setErrorMessage(null);
   
       const { data } = await axios.post(
-        "http://localhost:4000/api/v1/auth/register",
+        "https://book-rental-application.onrender.com/api/v1/auth/register",
         { name, phone, email, password, location, role },
         { withCredentials: true }
       );

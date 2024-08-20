@@ -37,7 +37,7 @@ export const fetchUsers = createAsyncThunk(
     }
 
     try {
-      const response = await fetch('http://localhost:4000/api/v1/users/getusers', {
+      const response = await fetch('https://book-rental-application.onrender.com/api/v1/users/getusers', {
         method: 'GET',
         headers: {
           'Content-Type': 'application/json',
@@ -72,7 +72,7 @@ export const updateBookApproval = createAsyncThunk(
     }
 
     try {
-      const response = await fetch(`http://localhost:4000/api/v1/book/${bookId}`, {
+      const response = await fetch(`https://book-rental-application.onrender.com/api/v1/book/${bookId}`, {
         method: 'PATCH',
         headers: {
           'Content-Type': 'application/json',
@@ -108,7 +108,7 @@ export const updateUser = createAsyncThunk(
     }
 
     try {
-      const response = await fetch(`http://localhost:4000/api/v1/users/update/${userId}`, {
+      const response = await fetch(`https://book-rental-application.onrender.com/api/v1/users/update/${userId}`, {
         method: 'PUT',
         headers: {
           'Content-Type': 'application/json',
@@ -144,7 +144,7 @@ export const deleteUser = createAsyncThunk(
     }
 
     try {
-      const response = await fetch(`http://localhost:4000/api/v1/users/delete/${userId}`, {
+      const response = await fetch(`https://book-rental-application.onrender.com/api/v1/users/delete/${userId}`, {
         method: 'DELETE',
         headers: {
           'Content-Type': 'application/json',
@@ -179,7 +179,7 @@ export const updateUserStatus = createAsyncThunk(
     }
 
     try {
-      const response = await fetch(`http://localhost:4000/api/v1/users/${userId}/status`, {
+      const response = await fetch(`https://book-rental-application.onrender.com/api/v1/users/${userId}/status`, {
         method: 'PUT',
         headers: {
           'Content-Type': 'application/json',
@@ -211,7 +211,7 @@ export const signupUser = createAsyncThunk(
     dispatch(signupStart());
 
     try {
-      const response = await fetch('http://localhost:4000/api/v1/auth/register', {
+      const response = await fetch('https://book-rental-application.onrender.com/api/v1/auth/register', {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',

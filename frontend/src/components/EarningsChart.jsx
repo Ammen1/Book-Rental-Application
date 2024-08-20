@@ -21,7 +21,7 @@ const EarningsChart = () => {
           throw new Error('User ID or token is missing');
         }
 
-        const response = await fetch(`http://localhost:4000/api/v1/book/owner/${userId}`, {
+        const response = await fetch(`https://book-rental-application.onrender.com/api/v1/book/owner/${userId}`, {
           headers: {
             'Authorization': `Bearer ${token}`,
             'Content-Type': 'application/json',
