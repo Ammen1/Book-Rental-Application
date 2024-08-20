@@ -64,7 +64,7 @@ const Login = () => {
     dispatch(signInStart(formData));
 
     try {
-      const response = await fetch('https://book-rental-application.onrender.com/api/v1/auth/login', {
+      const response = await fetch('http://localhost:4000/api/v1/auth/login', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify(formData),
@@ -103,16 +103,14 @@ const Login = () => {
         alignItems: 'center',
         justifyContent: 'center',
         backgroundColor: '#fff',
-        padding: 0,
       }}
     >
       <Grid
         container
-        spacing={0}
+        spacing={4}
         sx={{
-          height: '100%',
-          width: '100%',
-          maxWidth: '1200px',
+          height: '110vh',
+          maxWidth: '1950px',
           display: 'flex',
           flexDirection: 'row',
         }}
@@ -159,7 +157,6 @@ const Login = () => {
             height: '100%',
             borderRadius: isSmallScreen ? '8px 8px 0 0' : '0 8px 8px 0',
             backgroundColor: '#ffffff',
-            boxShadow: '0 4px 8px rgba(0, 0, 0, 0.1)',
             order: isSmallScreen ? 1 : 2,
           }}
         >

@@ -30,15 +30,17 @@ const BookCard = ({ book }) => {
   };
 
   const handleShare = () => {
+    // Construct the URL with the book ID
+    const url = `${window.location.origin}/book/${book.id}`;
     const text = `Check out this book: ${book.title} by ${book.author}`;
-    const url = window.location.href;
-
+  
     // Construct the Telegram URL
     const telegramUrl = `https://t.me/share/url?url=${encodeURIComponent(url)}&text=${encodeURIComponent(text)}`;
-    
+  
     // Open Telegram share URL
     window.open(telegramUrl, '_blank');
   };
+  
 
   return (
     <MotionCard
