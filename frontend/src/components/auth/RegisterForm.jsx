@@ -10,7 +10,11 @@ import {
   useTheme,
   useMediaQuery,
   Snackbar,
-  Alert
+  Alert,
+  FormControl,
+  InputLabel,
+  Select,
+  MenuItem
 } from '@mui/material';
 import { useState } from 'react';
 import { Link, useNavigate } from "react-router-dom";
@@ -26,7 +30,7 @@ const Signup = () => {
     password: "",
     location: "",
     termsAccepted: false,
-    role: "USER",
+    role: "USER", // Default role
   });
   const [errorMessage, setErrorMessage] = useState(null);
   const [loading, setLoading] = useState(false);
@@ -42,6 +46,13 @@ const Signup = () => {
     });
   };
 
+  const handleRoleChange = (e) => {
+    setFormData({
+      ...formData,
+      role: e.target.value
+    });
+  };
+
   const handleCloseSnackbar = () => {
     setSnackbarOpen(false);
   };
@@ -50,7 +61,7 @@ const Signup = () => {
     e.preventDefault();
   
     // Basic Validation
-    const { name, phone, email, password, location, role } = formData;
+    const { name, phone, email, password, location } = formData;
     if (!name || !phone || !email || !password || !location) {
       setSnackbarMessage("Please fill out all fields.");
       setSnackbarOpen(true);
@@ -83,27 +94,25 @@ const Signup = () => {
   
       const { data } = await axios.post(
         "https://book-rental-application.onrender.com/api/v1/auth/register",
-        { name, phone, email, password, location, role },
+        { name, phone, email, password, location, role: formData.role },
         { withCredentials: true }
       );
   
+      // Handle response data
       console.log('Response Data:', data);
   
       // Store token and user data in localStorage
       localStorage.setItem('token', data.token);
       localStorage.setItem('user', JSON.stringify(data.user));
-      console.log(data.token)
   
       setLoading(false);
       navigate("/");
     } catch (error) {
       console.error('Axios Error:', error);
       if (error.response) {
-        if (errorMessage === "Email already registered!") {
-          setSnackbarMessage("This email is already registered. Please use a different email.");
-        } else {
-          setSnackbarMessage(errorMessage || "An error occurred. Please try again.");
-        }
+        // Specific error message handling
+        const message = error.response.data.message || "An error occurred. Please try again.";
+        setSnackbarMessage(message);
       } else {
         setSnackbarMessage("Network error. Please check your connection.");
       }
@@ -112,7 +121,6 @@ const Signup = () => {
     }
   };
   
-
   return (
     <Container
       component="main"
@@ -280,6 +288,23 @@ const Signup = () => {
                   borderRadius: 1,
                 }}
               />
+              <FormControl fullWidth margin="normal">
+                <InputLabel id="role-label">Role</InputLabel>
+                <Select
+                  labelId="role-label"
+                  id="role"
+                  value={formData.role}
+                  onChange={handleRoleChange}
+                  required
+                  sx={{
+                    backgroundColor: '#ffffff',
+                    borderRadius: 1,
+                  }}
+                >
+                  <MenuItem value="USER">User</MenuItem>
+                  <MenuItem value="OWNER">Owner</MenuItem>
+                </Select>
+              </FormControl>
               <FormControlLabel
                 control={
                   <Checkbox
@@ -294,49 +319,35 @@ const Signup = () => {
               />
               <Button
                 type="submit"
-                fullWidth
                 variant="contained"
                 color="primary"
+                fullWidth
+                sx={{ mt: 2, backgroundColor: '#00ABFF' }}
                 disabled={loading}
-                sx={{
-                  mt: 2,
-                  backgroundColor: '#00ABFF',
-                  '&:hover': {
-                    backgroundColor: '#007BB5',
-                  },
-                  borderRadius: 1,
-                }}
               >
-                {loading ? 'Signing Up...' : 'Sign Up'}
+                {loading ? "Registering..." : "Sign Up"}
               </Button>
+              <Box sx={{ mt: 3, textAlign: 'center' }}>
+                <Typography
+                  variant="body2"
+                  color="textSecondary"
+                  onClick={() => {
+                    navigate("/login");
+                  }}
+                >
+                  Already have an account? <Link to="/login">Sign In</Link>
+                </Typography>
+              </Box>
             </form>
-            <Typography
-              variant="body2"
-              align="center"
-              sx={{
-                mt: 2,
-                color: '#000',
-                fontFamily: 'Roboto, sans-serif',
-              }}
-            >
-              Already have an account? <Link to="/signin" style={{ color: '#00ABFF' }}>Login</Link>
-            </Typography>
           </Box>
         </Grid>
       </Grid>
-
-      {/* Snackbar for error messages */}
       <Snackbar
         open={snackbarOpen}
         autoHideDuration={6000}
         onClose={handleCloseSnackbar}
-        action={
-          <Button color="inherit" onClick={handleCloseSnackbar}>
-            Close
-          </Button>
-        }
       >
-        <Alert onClose={handleCloseSnackbar} severity="error">
+        <Alert onClose={handleCloseSnackbar} severity="error" sx={{ width: '100%' }}>
           {snackbarMessage}
         </Alert>
       </Snackbar>

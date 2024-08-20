@@ -15,6 +15,12 @@ import { authenticate } from './src/middlewares/authenticate.js';
 const app = express();
 config({ path: './config/config.env' });
 
+const corsOptions = {
+    origin: 'https://book-rental-application.vercel.app/',
+    methods: 'GET,HEAD,PUT,PATCH,POST,DELETE',
+    credentials: true,
+  };
+
 app.use(cookieParser());
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
