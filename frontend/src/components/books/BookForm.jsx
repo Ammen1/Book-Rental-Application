@@ -73,7 +73,7 @@ const BookForm = () => {
 
       if (selectedBook) {
         // Update existing book
-        await axios.put(`http://localhost:4000/api/v1/book/${selectedBook.id}`, bookData, {
+        await axios.put(`https://book-rental-application.onrender.com/api/v1/book/${selectedBook.id}`, bookData, {
           headers: {
             'Content-Type': 'application/json',
             'Authorization': `Bearer ${token}`,
@@ -81,7 +81,7 @@ const BookForm = () => {
         });
       } else {
         // Create new book
-        await axios.post('http://localhost:4000/api/v1/book', bookData, {
+        await axios.post('https://book-rental-application.onrender.com/api/v1/book', bookData, {
           headers: {
             'Content-Type': 'application/json',
             'Authorization': `Bearer ${token}`,
