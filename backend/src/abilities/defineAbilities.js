@@ -14,8 +14,9 @@ export const defineAbilitiesFor = (role) => {
     can('manage', 'all'); 
   } else if (role === 'USER') {
     // Users can read and update their own profiles
-    can('read', 'User'); 
+    can('read', 'User', { id: 'own' }); 
     can('update', 'User', { id: 'own' }); 
+    can('read', 'Book');
     cannot('delete', 'User', { id: 'own' });
     
     // Users can read books and manage their own rentals
