@@ -157,11 +157,6 @@ export const getBooksByOwnerId = catchAsyncErrors(async (req, res, next) => {
   const { wallet, preMonths, preYears } = req.query;
 
   try {
-    // Ensure ownerId is valid
-    if (!ownerId || isNaN(Number(ownerId))) {
-      return next(new ErrorHandler("Invalid owner ID", 400));
-    }
-
     // Build query filters
     const filters = { ownerId: Number(ownerId) };
 
@@ -186,16 +181,17 @@ export const getBooksByOwnerId = catchAsyncErrors(async (req, res, next) => {
     // Fetch books and owner's data based on filters
     const books = await prisma.book.findMany({
       where: filters,
-      include: { owner: true },
+      include: {
+        owner: true,
+      },
     });
 
-    // Check if books are found
     if (books.length === 0) {
       return next(new ErrorHandler("No books found for this owner", 404));
     }
 
     // Calculate total earnings for the current period
-    const totalEarnings = books.reduce((sum, book) => sum + (book.price || 0), 0);
+    const totalEarnings = books.reduce((sum, book) => sum + book.price, 0);
 
     // Calculate previous month earnings
     const previousMonth = new Date();
@@ -213,9 +209,8 @@ export const getBooksByOwnerId = catchAsyncErrors(async (req, res, next) => {
       },
     });
 
-    const previousMonthEarnings = previousMonthBooks.reduce((sum, book) => sum + (book.price || 0), 0);
+    const previousMonthEarnings = previousMonthBooks.reduce((sum, book) => sum + book.price, 0);
 
-    // Send response
     res.status(200).json({
       success: true,
       owner: books[0].owner,
@@ -228,7 +223,6 @@ export const getBooksByOwnerId = catchAsyncErrors(async (req, res, next) => {
     return next(new ErrorHandler("Internal Server Error", 500));
   }
 });
-
 
 
 // Update a book by ID
