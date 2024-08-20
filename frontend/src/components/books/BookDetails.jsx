@@ -32,7 +32,7 @@ const BookDetailsPage = () => {
 
   useEffect(() => {
     axios
-      .get(`hhttps://book-rental-application.onrender.com/api/v1/book/${id}`, {
+      .get(`https://book-rental-application.onrender.com/api/v1/book/${id}`, {
         headers: {
           Authorization: `Bearer ${localStorage.getItem('token')}`,
         },
