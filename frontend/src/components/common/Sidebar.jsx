@@ -44,20 +44,13 @@ const EnhancedSidebar = () => {
   };
 
   const handleSignout = async () => {
-    try {
-      const res = await fetch("/api/v1/user/signout", {
-        method: "POST",
-      });
-      const data = await res.json();
-      if (!res.ok) {
-        console.log(data.message);
-      } else {
+      localStorage.removeItem('token');
+        navigate('/signin');
         dispatch(signoutSuccess());
-      }
-    } catch (error) {
-      console.log(error.message);
-    }
+      
+    
   };
+  
 
   const menuItems = [
     { text: 'Dashboard', icon: <DashboardIcon fontSize="14px" />, roles: ['ADMIN', 'OWNER'], path: '/dashboard' },
