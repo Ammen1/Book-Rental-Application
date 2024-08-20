@@ -35,7 +35,7 @@ const DashboardComp = () => {
         'Content-Type': 'application/json',
       };
 
-      const booksResponse = await axios.get(`http://localhost:4000/api/v1/book/owner/${ownerId}`, { headers });
+      const booksResponse = await axios.get(`https://book-rental-application.onrender.com/api/v1/book/owner/${ownerId}`, { headers });
       const booksData = booksResponse.data.books;
 
       setBooks(booksData);
