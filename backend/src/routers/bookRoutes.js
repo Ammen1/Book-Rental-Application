@@ -25,7 +25,7 @@ router.get(
 
 router.get(
   '/owner/:ownerId',
-  checkAbilities('read', 'Book'),
+  // checkAbilities('read', 'Book'),
   getBooksByOwnerId
 );
 
