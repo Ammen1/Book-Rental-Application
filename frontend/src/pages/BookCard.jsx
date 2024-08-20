@@ -11,6 +11,12 @@ const MotionCard = motion(Card);
 const BookCard = ({ book }) => {
   const [liked, setLiked] = useState(false); 
 
+  // Check if book object and required properties are available
+  if (!book || !book.title || !book.author || !book.category) {
+    console.error("Invalid book object:", book);
+    return null; // or you could render a fallback UI
+  }
+
   const averageRating = book.ratings && book.ratings.length > 0 
     ? book.ratings.reduce((sum, rating) => sum + rating, 0) / book.ratings.length 
     : 3.60; 
@@ -21,6 +27,17 @@ const BookCard = ({ book }) => {
 
   const handleLike = () => {
     setLiked((prevLiked) => !prevLiked); 
+  };
+
+  const handleShare = () => {
+    const text = `Check out this book: ${book.title} by ${book.author}`;
+    const url = window.location.href;
+
+    // Construct the Telegram URL
+    const telegramUrl = `https://t.me/share/url?url=${encodeURIComponent(url)}&text=${encodeURIComponent(text)}`;
+    
+    // Open Telegram share URL
+    window.open(telegramUrl, '_blank');
   };
 
   return (
@@ -38,7 +55,7 @@ const BookCard = ({ book }) => {
         },
       }}
     >
-      <CardActionArea >
+      <CardActionArea>
         <CardMedia
           component="img"
           height="170"
@@ -71,6 +88,7 @@ const BookCard = ({ book }) => {
           </Tooltip>
           <Tooltip title="Share">
             <IconButton 
+              onClick={handleShare}
               sx={{ 
                 color: '#fff', 
                 backgroundColor: 'rgba(0,0,0,0.5)', 

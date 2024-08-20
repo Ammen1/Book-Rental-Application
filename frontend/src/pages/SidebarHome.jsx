@@ -1,26 +1,6 @@
-import React, { useState, useEffect } from 'react';
+/* eslint-disable react/prop-types */
 import { Box, Typography, Divider, TextField } from '@mui/material';
-import axios from 'axios';
-
-const Sidebar = ({ author, setAuthor, title, setTitle, location, setLocation, setCategory, category }) => {
-  // const [categories, setCategories] = useState([]);
-
-  // useEffect(() => {
-  //   const token = localStorage.getItem('token');
-  //   const fetchCategories = async () => {
-  //     try {
-  //       const response = await axios.get('https://book-rental-application.onrender.com/api/v1/categories', 
-  //         { headers: { Authorization: `Bearer ${token}` } }
-  //       ); 
-  //       setCategories(response.data.categories); 
-  //     } catch (error) {
-  //       console.error('Failed to fetch categories', error);
-  //     }
-  //   };
-
-  //   fetchCategories();
-  // }, []);
-
+const Sidebar = ({ author, setAuthor, title, setTitle, location, setLocation}) => {
   return (
     <Box
       sx={{

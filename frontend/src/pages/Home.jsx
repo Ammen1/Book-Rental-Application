@@ -17,7 +17,7 @@ const HomePage = () => {
   useEffect(() => {
     axios.get('https://book-rental-application.onrender.com/api/v1/book', {
       headers: {
-        Authorization: `Bearer ${localStorage.getItem(true)}`
+        Authorization: `Bearer ${localStorage.getItem('token')}`
       }
     })
       .then((response) => {

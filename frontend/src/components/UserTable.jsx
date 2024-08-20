@@ -5,9 +5,8 @@ import {
   Paper, Typography, Table, TableBody, TableCell, TableContainer, TableHead,
   TableRow, Box, IconButton, Avatar, Tooltip, Switch, FormControlLabel,
   Button, CircularProgress, Grid, TablePagination, Dialog, DialogActions,
-  DialogContent, DialogTitle, TextField, useMediaQuery
+  DialogContent, TextField, useMediaQuery
 } from '@mui/material';
-import EditIcon from '@mui/icons-material/Edit';
 import DeleteIcon from '@mui/icons-material/Delete';
 import CheckCircleIcon from '@mui/icons-material/CheckCircle';
 import { deepOrange, deepPurple } from '@mui/material/colors';

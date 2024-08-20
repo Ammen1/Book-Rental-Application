@@ -4,7 +4,6 @@ import Signup from './components/auth/RegisterForm';
 import Login from './components/auth/LoginForm';
 import UserTable from './components/UserTable';
 import EnhancedSidebar from './components/common/Sidebar';
-import Navbar from './components/common/Navbar';
 import { useMemo } from 'react';
 import BooksTable from './components/books/BookList';
 import BookForm from './components/books/BookForm';

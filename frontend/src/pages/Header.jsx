@@ -1,3 +1,4 @@
+/* eslint-disable react-refresh/only-export-components */
 import React, { useState } from 'react';
 import { AppBar, Toolbar, Typography, Box, TextField, InputAdornment, IconButton, Menu, MenuItem, Avatar, Tooltip, Badge } from '@mui/material';
 import { Link, useNavigate } from 'react-router-dom'; // Import Link and useNavigate
@@ -89,7 +90,7 @@ const Header = ({ handleMenuItemClick, handleUserMenuItemClick }) => {
           >
             <MenuItem component={Link} to="/signin">Sign In</MenuItem> 
             <MenuItem component={Link} to="/signup">Sign Up</MenuItem> 
-            <MenuItem component={Link} to="/books">Browse Books</MenuItem> 
+            <MenuItem component={Link} to="/dashboard">Go To Dashboard</MenuItem> 
           </Menu>
           <Tooltip title="User Menu">
             <IconButton
@@ -113,7 +114,7 @@ const Header = ({ handleMenuItemClick, handleUserMenuItemClick }) => {
           >
             <MenuItem onClick={() => navigate('/profile')}>Profile</MenuItem>
             <MenuItem onClick={() => navigate('/settings')}>Settings</MenuItem>
-            <MenuItem onClick={() => navigate('/logout')}>Logout</MenuItem>
+            <MenuItem onClick={() => navigate('/signin')}>Logout</MenuItem>
           </Menu>
         </Box>
       </Toolbar>

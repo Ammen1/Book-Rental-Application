@@ -5,8 +5,6 @@ import BookStatusTable from '../components/BookStatusTable';
 import axios from 'axios';
 import { useSelector } from 'react-redux';
 
-
-
 const DashboardComp = () => {
   const [ownerId, setOwnerId] = useState(null);
   const [books, setBooks] = useState([]);
@@ -17,9 +15,7 @@ const DashboardComp = () => {
   const [error, setError] = useState(null);
   const { currentUser } = useSelector((state) => state.user);
 
-  const userId = currentUser.user?.id;
-
-  const token = localStorage.getItem('token');
+  const userId = currentUser?.user?.id;
 
   useEffect(() => {
     if (userId) {
@@ -30,18 +26,17 @@ const DashboardComp = () => {
 
   const fetchBooksAndEarnings = async (ownerId) => {
     try {
-      const headers = {
-        Authorization: `Bearer ${token}`,
-        'Content-Type': 'application/json',
-      };
-
-      const booksResponse = await axios.get(`https://book-rental-application.onrender.com/api/v1/book/owner/${ownerId}`, { headers });
+      const booksResponse = await axios.get(`https://book-rental-application.onrender.com/api/v1/book/owner/${ownerId}`, {
+        headers: {
+           Authorization: `Bearer ${localStorage.getItem('token')}`
+        },
+      });
       const booksData = booksResponse.data.books;
 
       setBooks(booksData);
 
       // Calculate total earnings
-      const total = booksData.reduce((sum, book) => sum + (book.owner.wallet || 0), 0);
+      const total = booksData.reduce((sum, book) => sum + (book.price || 0), 0);
       setTotalEarnings(total);
 
       // Calculate monthly and previous month's earnings
@@ -51,17 +46,17 @@ const DashboardComp = () => {
       const previousMonthYear = currentMonth === 0 ? currentYear - 1 : currentYear;
 
       const monthlyTotal = booksData.reduce((sum, book) => {
-        const bookDate = new Date(book.createdAt ); 
+        const bookDate = new Date(book.createdAt);
         if (bookDate.getMonth() === currentMonth && bookDate.getFullYear() === currentYear) {
-          return sum + (book.owner.wallet || 0);
+          return sum + (book.price || 0);
         }
         return sum;
       }, 0);
 
       const previousMonthlyTotal = booksData.reduce((sum, book) => {
-        const bookDate = new Date(book.createdAt );
+        const bookDate = new Date(book.createdAt);
         if (bookDate.getMonth() === previousMonth && bookDate.getFullYear() === previousMonthYear) {
-          return sum + (book.owner.wallet || 0);
+          return sum + (book.price || 0);
         }
         return sum;
       }, 0);
@@ -70,7 +65,7 @@ const DashboardComp = () => {
       setPreviousMonthEarnings(previousMonthlyTotal);
       setLoading(false);
     } catch (err) {
-      setError(err, 'Error fetching data');
+      setError('Error fetching data'); // Set a user-friendly error message
       setLoading(false);
     }
   };
@@ -93,7 +88,7 @@ const DashboardComp = () => {
       : 0;
 
   if (loading) return <Typography>Loading...</Typography>;
-  if (error) return <Typography>{error}</Typography>;
+  if (error) return <Typography color="error">{error}</Typography>; // Display error in red
 
   return (
     <Box sx={{ display: 'flex', flexDirection: 'column', mt: 4, background: '#F0F2FF' }}>
