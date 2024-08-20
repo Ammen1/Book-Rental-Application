@@ -40,6 +40,7 @@ export const defineAbilitiesFor = (role) => {
     can('read', 'Rental', { 'book.ownerId': 'own' }); 
     cannot('delete', 'Rental');
     can('create', 'Category'); 
+    can('read', 'Category'); 
   }
 
   return build();
