@@ -10,21 +10,21 @@ import rentalRoutes from './src/routers/rentalRoutes.js';
 import { errorMiddleware } from "./src/middlewares/error.js";
 import { authenticate } from './src/middlewares/authenticate.js';
 
-
-
 const app = express();
 config({ path: './config/config.env' });
 
 const corsOptions = {
-    origin: 'https://book-rental-application.vercel.app/',
+    origin: 'https://book-rental-application.vercel.app', 
     methods: 'GET,HEAD,PUT,PATCH,POST,DELETE',
     credentials: true,
-  };
+};
+
+// Apply CORS middleware with options
+app.use(cors(corsOptions));
 
 app.use(cookieParser());
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
-app.use(cors());
 
 app.use('/api/v1/auth', authRoutes);
 
@@ -33,7 +33,6 @@ app.use('/api/v1/users', authenticate, userRoutes);
 app.use('/api/v1/categories', authenticate, categoryRoutes);
 app.use('/api/v1/book', bookRoutes);
 app.use('/api/v1/rentals', authenticate, rentalRoutes);
-
 
 app.use(errorMiddleware);
 
