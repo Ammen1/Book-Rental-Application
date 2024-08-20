@@ -15,7 +15,7 @@ const DashboardComp = () => {
   const [error, setError] = useState(null);
   const { currentUser } = useSelector((state) => state.user);
 
-  const userId = currentUser?.user?.id;
+  const userId = currentUser.id;
   const token = localStorage.getItem('token');
 
   useEffect(() => {
@@ -33,7 +33,7 @@ const DashboardComp = () => {
       };
 
       setLoading(true);
-      const booksResponse = await axios.get(`https://book-rental-application.onrender.com/api/v1/book/${ownerId}`, { headers });
+      const booksResponse = await axios.get(`https://book-rental-application.onrender.com/api/v1/book/owner/${ownerId}`, { headers });
       const booksData = booksResponse.data.books;
 
       setBooks(booksData);

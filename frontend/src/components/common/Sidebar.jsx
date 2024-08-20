@@ -63,7 +63,7 @@ const EnhancedSidebar = () => {
     { text: 'Dashboard', icon: <DashboardIcon fontSize="14px" />, roles: ['ADMIN', 'OWNER'], path: '/dashboard' },
     { text: 'Books', icon: <BookIcon fontSize="14px" />, roles: ['ADMIN'], path: '/books' },
     { text: 'Owners', icon: <PersonIcon fontSize="10px" />, roles: ['ADMIN'], path: '/owners' },
-    { text: 'Book Upload', icon: <BookIcon fontSize="10px" />, roles: ['ADMIN'], path: '/upload-book' },
+    { text: 'Book Upload', icon: <BookIcon fontSize="10px" />, roles: ['OWNER'], path: '/upload-book' },
   ];
 
   const settingsItems = [
