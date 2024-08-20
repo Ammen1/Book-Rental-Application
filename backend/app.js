@@ -25,7 +25,7 @@ app.use('/api/v1/auth', authRoutes);
 // Apply the isAuthenticated middleware selectively to protected routes
 app.use('/api/v1/users', authenticate, userRoutes);
 app.use('/api/v1/categories', authenticate, categoryRoutes);
-app.use('/api/v1/book', authenticate, bookRoutes);
+app.use('/api/v1/book', bookRoutes);
 app.use('/api/v1/rentals', authenticate, rentalRoutes);
 
 
