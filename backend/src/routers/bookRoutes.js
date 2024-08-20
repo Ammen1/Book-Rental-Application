@@ -14,12 +14,12 @@ router.post(
 
 router.get(
   '/',
-  checkAbilities('read', 'Book'),
+  // checkAbilities('read', 'Book'),
   listBooks
 );
 router.get(
   '/:id',
-  checkAbilities('read', 'Book'),
+  // checkAbilities('read', 'Book'),
   getBookById
 );
 
