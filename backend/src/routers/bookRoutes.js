@@ -8,7 +8,7 @@ const router = express.Router();
 router.post(
   '/',
   validateBook,
-  checkAbilities('create', 'Book'),
+  // checkAbilities('create', 'Book'),
   createBook
 );
 
@@ -25,7 +25,7 @@ router.get(
 
 router.get(
   '/owner/:ownerId',
-  // checkAbilities('read', 'Book'),
+  checkAbilities('read', 'Book'),
   getBooksByOwnerId
 );
 
