@@ -54,7 +54,7 @@ const EnhancedSidebar = () => {
 
   const menuItems = [
     { text: 'Dashboard', icon: <DashboardIcon fontSize="14px" />, roles: ['ADMIN', 'OWNER'], path: '/dashboard' },
-    { text: 'Books', icon: <BookIcon fontSize="14px" />, roles: ['ADMIN'], path: '/books' },
+    { text: 'Books', icon: <BookIcon fontSize="14px" />, roles: ['ADMIN', "OWNER"], path: '/books' },
     { text: 'Owners', icon: <PersonIcon fontSize="10px" />, roles: ['ADMIN'], path: '/owners' },
     { text: 'Book Upload', icon: <BookIcon fontSize="10px" />, roles: ['OWNER'], path: '/upload-book' },
   ];
