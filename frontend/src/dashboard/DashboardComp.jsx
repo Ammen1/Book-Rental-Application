@@ -26,7 +26,7 @@ const DashboardComp = () => {
 
   const fetchBooksAndEarnings = async (ownerId) => {
     try {
-      const booksResponse = await axios.get(`https://book-rental-application.onrender.com/api/v1/book/owner/${ownerId}`, {
+      const booksResponse = await axios.get(`https://book-rental-application.onrender.com/api/v1/book/${ownerId}`, {
         headers: {
            Authorization: `Bearer ${localStorage.getItem('token')}`
         },
