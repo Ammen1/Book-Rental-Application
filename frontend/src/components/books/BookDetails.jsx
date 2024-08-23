@@ -18,6 +18,7 @@ import { useTheme } from '@mui/material/styles';
 import useMediaQuery from '@mui/material/useMediaQuery';
 import axios from 'axios';
 import { useParams } from 'react-router-dom';
+import { API_URL, BASE_URL } from '../../config';
 
 const BookDetailsPage = () => {
   const theme = useTheme();
@@ -30,9 +31,10 @@ const BookDetailsPage = () => {
   const [rating, setRating] = useState(0);
   const { id } = useParams();
 
+
   useEffect(() => {
     axios
-      .get(`https://book-rental-application.onrender.com/api/v1/book/${id}`, {
+      .get(`${BASE_URL}/book/${id}`, {
         headers: {
           Authorization: `Bearer ${localStorage.getItem(true)}`,
         },
@@ -56,7 +58,7 @@ const BookDetailsPage = () => {
   const handleRatingChange = (event, newValue) => {
     setRating(newValue);
     axios.put(
-      `https://book-rental-application.onrender.com/api/v1/book/${id}`,
+      `${BASE_URL}book/${id}`,
       { rating: newValue },
       {
         headers: {

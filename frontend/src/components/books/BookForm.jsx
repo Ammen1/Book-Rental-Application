@@ -1,10 +1,11 @@
-import React, { useState, useEffect } from 'react';
+import { useState, useEffect } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { fetchCategories } from '../../redux/categoryThunks';
 import { fetchBooks } from '../../redux/bookThunks';
 import { Autocomplete, TextField, Button, Dialog, DialogActions, DialogContent, DialogTitle, Grid, Box, MenuItem, Select, InputLabel, FormControl, Typography } from '@mui/material';
 import axios from 'axios';
 import { useNavigate } from 'react-router-dom'; 
+import { API_URL, BASE_URL } from '../../config';
 
 const BookForm = () => {
   const [selectedBook, setSelectedBook] = useState(null);
@@ -73,7 +74,7 @@ const BookForm = () => {
 
       if (selectedBook) {
         // Update existing book
-        await axios.put(`https://book-rental-application.onrender.com/api/v1/book/${selectedBook.id}`, bookData, {
+        await axios.put(`${BASE_URL}/book/${selectedBook.id}`, bookData, {
           headers: {
             'Content-Type': 'application/json',
             'Authorization': `Bearer ${token}`,
@@ -81,7 +82,7 @@ const BookForm = () => {
         });
       } else {
         // Create new book
-        await axios.post('https://book-rental-application.onrender.com/api/v1/book', bookData, {
+        await axios.post(`${BASE_URL}/book`, bookData, {
           headers: {
             'Content-Type': 'application/json',
             'Authorization': `Bearer ${token}`,
