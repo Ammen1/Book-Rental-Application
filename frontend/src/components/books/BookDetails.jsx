@@ -34,7 +34,7 @@ const BookDetailsPage = () => {
 
   useEffect(() => {
     axios
-      .get(`${BASE_URL}/book/${id}`, {
+      .get(`${API_URL}/book/${id}`, {
         headers: {
           Authorization: `Bearer ${localStorage.getItem(true)}`,
         },
@@ -58,7 +58,7 @@ const BookDetailsPage = () => {
   const handleRatingChange = (event, newValue) => {
     setRating(newValue);
     axios.put(
-      `${BASE_URL}book/${id}`,
+      `${API_URL}book/${id}`,
       { rating: newValue },
       {
         headers: {

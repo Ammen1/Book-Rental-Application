@@ -14,10 +14,11 @@ const app = express();
 config({ path: './config/config.env' });
 
 const corsOptions = {
-    origin: 'https://book-rental-application.vercel.app', 
+    origin: 'https://book-rental-application.vercel.app',
     methods: 'GET,HEAD,PUT,PATCH,POST,DELETE',
     credentials: true,
 };
+
 
 // Apply CORS middleware with options
 app.use(cors(corsOptions));

@@ -25,6 +25,7 @@ import { Visibility, VisibilityOff } from '@mui/icons-material';
 import { useDispatch, useSelector } from 'react-redux';
 import { useNavigate } from 'react-router-dom';
 import { signInStart, signInSuccess, signInFailure } from '../../redux/slices/userSlice';
+import { API_URL, BASE_URL } from '../../config';
 
 const Login = () => {
   const theme = useTheme();
@@ -64,7 +65,7 @@ const Login = () => {
     dispatch(signInStart(formData));
 
     try {
-      const response = await fetch('https://book-rental-application.onrender.com/api/v1/auth/login', {
+      const response = await fetch(`${API_URL}/auth/login`, {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify(formData),

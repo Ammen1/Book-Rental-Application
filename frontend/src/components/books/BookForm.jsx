@@ -74,7 +74,7 @@ const BookForm = () => {
 
       if (selectedBook) {
         // Update existing book
-        await axios.put(`${BASE_URL}/book/${selectedBook.id}`, bookData, {
+        await axios.put(`${API_URL}/book/${selectedBook.id}`, bookData, {
           headers: {
             'Content-Type': 'application/json',
             'Authorization': `Bearer ${token}`,
@@ -82,7 +82,7 @@ const BookForm = () => {
         });
       } else {
         // Create new book
-        await axios.post(`${BASE_URL}/book`, bookData, {
+        await axios.post(`${API_URL}/book`, bookData, {
           headers: {
             'Content-Type': 'application/json',
             'Authorization': `Bearer ${token}`,
