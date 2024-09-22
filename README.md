@@ -5,7 +5,7 @@
 
 The Book Rental Application is a full-stack project that allows users to rent books, upload books for rent, and manage book rentals. It includes dashboards for book owners and system admins, and implements access control using CASL. The application is built withs React.js for the frontend, Node.js for the backend, and PostgreSQL for the database.
 
-![Company Logo](image.png)
+
 
 ## Features
 
